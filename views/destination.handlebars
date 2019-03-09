@@ -1,0 +1,28 @@
+<html>
+
+<form id = "adddestination" action="" method="post">
+      City: <input type="text" name="city" value=""><br>
+      Country: <input type="text" name="country" value=""><br>
+      <input type="submit" value="Submit">
+</form>
+
+
+<h3>Destinations:</h3>
+<table>
+    <thead> 
+        <th>City</th> 
+        <th>Country</th> 
+        <th>Delete</th>  
+    </thead> 
+    <tbody>
+        {{#each destinations}} 
+        <tr> 
+            <td>{{city}}</td> 
+            <td>{{country}}</td> 
+            <td><button onclick="deleteRow('destination',{{id}})">Delete</button></td>
+            <td><a href="/destination/{{id}}">Update</a></td>
+        </tr> 
+        {{/each}} 
+    </tbody> 
+</table> 
+</html>

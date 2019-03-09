@@ -1,0 +1,71 @@
+<html>
+<!--
+{{#each foo}}
+{{this}}
+{{/each}}
+<h3>Add new people:</h3>
+<form id="addperson" action="/people" method="post">
+    First name: <input type="text" name="fname"><br>
+    Last name: <input type="text" name="lname"><br>
+    Homeworld: <select name="homeworld"> 
+        {{#each planets}}
+        <option value="{{id}}">{{name}}</option>
+        {{/each}}
+    </select><br>
+    Age: <input type="number" name="age"><br>
+    <input type="submit" value="Submit">
+ </form>
+<br/>
+
+
+<form id='filter_people' action='' method=''> -->
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+  <!--  <label> Filter by homeworld </label>
+    <select id='homeworld_filter' name="homeworld"> 
+        {{#each planets}}
+        <option value="{{id}}">{{name}}</option>
+        {{/each}}
+    </select><br>
+    <input type="button" value="Filter" onclick="filterPeopleByHomeworld()">
+</form>
+
+<form id='search_people' action='' method=''> -->
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+   <!-- <label> Search people for first name starting with:</label>
+    <input id='first_name_search_string' type='text' name='first_name_search_string' value=''>
+    <input type="button" value="Search" onclick="searchPeopleByFirstName()">
+</form>
+
+-->
+
+
+
+<form id = "addairline" action="" method="post">
+      IATA Code: <input type="text" name="iata" value=""><br>
+      Name: <input type="text" name="name" value=""><br>
+      Departure terminal: <input type="text" name="terminal" value=""><br>
+      <input type="submit" value="Submit">
+</form>
+
+
+<h3>Airlines:</h3>
+<table>
+    <thead> 
+        <th>IATA Code</th> 
+        <th>Name</th> 
+        <th>Terminal</th>
+        <th>Delete</th>  
+    </thead> 
+    <tbody>
+        {{#each airlines}} 
+        <tr> 
+            <td>{{IATA_code}}</td> 
+            <td>{{name}}</td> 
+            <td>{{departure_terminal}}</td>
+            <td><button onclick="deleteRow('airline','{{IATA_code}}')">Delete</button></td>
+<!--        <td><a href="/people/{{id}}">Update</a></td> -->
+        </tr> 
+        {{/each}} 
+    </tbody> 
+</table> 
+</html>

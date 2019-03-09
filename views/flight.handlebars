@@ -1,0 +1,50 @@
+<html>
+
+<form id = "addflight" action="" method="post">
+      Airline: <select name="airline"> 
+        {{#each airlines}}
+        <option value="{{IATA_code}}">{{name}}</option>
+        {{/each}}
+      </select><br>
+      Flight Number: <input type="text" name="flight" value=""><br>
+      Departure Time: <input type="datetime-local" name="departure" value=""><br>
+      Arrival Time: <input type="datetime-local" name="arrival" value=""><br>
+      Destination: <select name="destination"> 
+        {{#each destinations}}
+        <option value="{{id}}">{{city}}</option>
+        {{/each}}
+      </select><br>
+      Plane: <select name="plane"> 
+        {{#each planes}}
+        <option value="{{id}}">{{id}}</option>
+        {{/each}}
+      </select><br>
+      <input type="submit" value="Submit">
+</form>
+
+
+<h3>Flights:</h3>
+<table>
+    <thead> 
+        <th>Flight</th> 
+        <th>Departure Time</th> 
+        <th>Arrival Time</th> 
+        <th>Destination</th> 
+        <th>Plane</th> 
+        <th>Delete</th>  
+    </thead> 
+    <tbody>
+        {{#each flights}} 
+        <tr> 
+            <td>{{flight_number}}</td> 
+            <td>{{departure_time}}</td> 
+            <td>{{arrival_time}}</td> 
+            <td>{{destination}}</td> 
+            <td>{{plane}}</td> 
+            <td><button onclick="deleteRow('flight','{{flight_number}}')">Delete</button></td>
+<!--        <td><a href="/people/{{id}}">Update</a></td> -->
+        </tr> 
+        {{/each}} 
+    </tbody> 
+</table> 
+</html>

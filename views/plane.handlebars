@@ -1,0 +1,34 @@
+<html>
+
+<form id = "addplane" action="" method="post">
+      Airline: <select name="airline"> 
+        {{#each airlines}}
+        <option value="{{IATA_code}}">{{name}}</option>
+        {{/each}}
+      </select><br>
+      Model: <input type="text" name="model" value=""><br>
+      <input type="submit" value="Submit">
+</form>
+
+
+<h3>Planes:</h3>
+<table>
+    <thead> 
+        <th>Plane Number</th> 
+        <th>Airline</th> 
+        <th>Model</th> 
+        <th>Delete</th>  
+    </thead> 
+    <tbody>
+        {{#each planes}} 
+        <tr> 
+            <td>{{id}}</td> 		
+            <td>{{airline}}</td> 
+            <td>{{model}}</td> 
+            <td><button onclick="deleteRow('plane',{{id}})">Delete</button></td>
+<!--        <td><a href="/people/{{id}}">Update</a></td> -->
+        </tr> 
+        {{/each}} 
+    </tbody> 
+</table> 
+</html>
