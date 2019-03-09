@@ -137,6 +137,57 @@ module.exports = function(){
         }
     });
 */
+
+    //UPDATE
+    router.get('/:IATA_code', function(req, res){
+        var callbackCount = 0;
+        var context = {};
+        context.jsscripts = ["updateAirlines.js"];
+            var mysql = req.app.get('mysql');
+            getDest(res, mysql, context, req.params.id, complete);
+            function complete(){
+                callbackCount++;
+                if(callbackCount >= 1){
+                    res.render('update-airlines', context);
+                }
+    
+            }
+        });
+    
+        function getDest(res, mysql, context, IATA_code, complete){
+            var sql = "SELECT IATA_code, name, departure_terminal FROM airlines WHERE IATA_code =?";
+            var inserts = [IATA_code];
+            mysql.pool.query(sql, inserts, function(error, results, fields){
+                if(error){
+                    res.write(JSON.stringify(error));
+                    res.end();
+                }
+                context.airlines = results[0];
+                complete();
+            });
+        }
+       
+        router.put('/:IATA_code', function(req, res){
+            var mysql = req.app.get('mysql');
+            var sql = "UPDATE airlines SET IATA_code=?, name=?, departure_terminal=?  WHERE IATA_code=?";
+            var inserts = [req.body.IATA_code, req.body.name, req.body.departure_terminal, req.params.IATA_code];
+            sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+                if(error){
+                    res.write(JSON.stringify(error));
+                    res.end();
+                }else{
+                    res.status(200);
+                    res.end();
+                }
+            });
+        });
+
+
+
+
+
+
+
     /* Adds a person, redirects to the people page after adding */
     router.post('/', function(req, res){
    //     console.log(req.body.homeworld)
