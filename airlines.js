@@ -201,7 +201,7 @@ module.exports = function(){
                 res.write(JSON.stringify(error));
                 res.end();
             }else{
-                res.redirect('/airline/;');
+                res.redirect('/airline/');
             }
         });
     });
