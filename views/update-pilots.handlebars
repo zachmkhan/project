@@ -1,0 +1,17 @@
+<h1>Update {{pilots.first_name}} {{pilots.last_name}} {{pilots.employer}} {{pilots.flights}}:</h1>
+<form id="update-pilots" action="/pilot" method="post">
+    First Name: <input type="text" name="first_name" value="{{pilots.first_name}}"><br>
+    Last Name: <input type="text" name="last_name" value="{{pilots.last_name}}"><br>
+    Employer: <select name="employer"> 
+        {{#each airlines}}
+        <option value="{{name}}">{{name}}</option>
+        {{/each}}
+      </select><br>
+    Flight: <select name="flight"> 
+        {{#each flights}}
+        <option value="{{airline_designator}}{{flight_number}}">{{airline_designator}}{{flight_number}}</option>
+        {{/each}}
+      </select><br>
+</form>
+<button onclick="updatePilots({{pilots.id}})">Update</button>
+<script defer>selectFlights({{pilots.flights}});</script>
