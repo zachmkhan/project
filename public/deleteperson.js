@@ -1,4 +1,4 @@
-function deleteRow(type, id){
+function deletePerson(type, id){
     $.ajax({
         url: '/'+ type + '/' + id,
         type: 'DELETE',
