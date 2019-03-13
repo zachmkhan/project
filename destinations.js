@@ -13,6 +13,19 @@ module.exports = function(){
         });
     }
 
+    function getDestination(res, mysql, context, id, complete){
+        var sql = "SELECT id, city, country FROM destinations WHERE id = ?";
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.destination = results[0];
+            complete();
+        });
+}
+
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
@@ -28,36 +41,21 @@ module.exports = function(){
         }
     });
 
-
-    //UPDATE
     router.get('/:id', function(req, res){
     var callbackCount = 0;
     var context = {};
-	context.jsscripts = ["updateDestinations.js"];
+	context.jsscripts = ["update.js"];
         var mysql = req.app.get('mysql');
-        getDest(res, mysql, context, req.params.id, complete);
+        getDestination(res, mysql, context, req.params.id, complete);
         function complete(){
             callbackCount++;
             if(callbackCount >= 1){
-                res.render('update-destinations', context);
+                res.render('update-destination', context);
             }
 
         }
     });
 
-    function getDest(res, mysql, context, id, complete){
-        var sql = "SELECT id, city, country FROM destinations WHERE id = ?";
-        var inserts = [id];
-        mysql.pool.query(sql, inserts, function(error, results, fields){
-            if(error){
-                res.write(JSON.stringify(error));
-                res.end();
-            }
-            context.destinations = results[0];
-            complete();
-        });
-    }
-   
     router.put('/:id', function(req, res){
         var mysql = req.app.get('mysql');
         var sql = "UPDATE destinations SET city=?, country=? WHERE id=?";
@@ -71,13 +69,7 @@ module.exports = function(){
                 res.end();
             }
         });
-    });
-
-
-
-
-
-
+});
 
     router.post('/', function(req, res){
    //     console.log(req.body.homeworld)

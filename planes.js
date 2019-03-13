@@ -40,61 +40,6 @@ module.exports = function(){
         }
     });
 
-
-
-
-
-        //UPDATE
-        router.get('/:id', function(req, res){
-            var callbackCount = 0;
-            var context = {};
-            context.jsscripts = ["updatePlanes.js"];
-                var mysql = req.app.get('mysql');
-                getP(res, mysql, context, req.params.id, complete);
-                getAirlines(res, mysql, context, complete);
-                function complete(){
-                    callbackCount++;
-                    if(callbackCount >= 2){ //Might need to be 2
-                        res.render('update-planes', context);
-                    }
-        
-                }
-            });
-        
-            function getP(res, mysql, context, id, complete){
-                var sql = "SELECT id, airline, model FROM planes WHERE id = ?";
-                var inserts = [id];
-                mysql.pool.query(sql, inserts, function(error, results, fields){
-                    if(error){
-                        res.write(JSON.stringify(error));
-                        res.end();
-                    }
-                    context.planes = results[0];
-                    complete();
-                });
-            }
-           
-            router.put('/:id', function(req, res){
-                var mysql = req.app.get('mysql');
-                var sql = "UPDATE planes SET airline=?, model=? WHERE id=?";
-                var inserts = [req.body.airline, req.body.model, req.params.id];
-                sql = mysql.pool.query(sql,inserts,function(error, results, fields){
-                    if(error){
-                        res.write(JSON.stringify(error));
-                        res.end();
-                    }else{
-                        res.status(200);
-                        res.end();
-                    }
-                });
-            });
-
-
-
-
-
-
-
     router.post('/', function(req, res){
         console.log(req.body)
         var mysql = req.app.get('mysql');

@@ -24,6 +24,19 @@ module.exports = function(){
             complete();
         });
     }
+
+    function getAirline(res, mysql, context, id, complete){
+        var sql = "SELECT IATA_code, name, departure_terminal FROM airlines WHERE IATA_code = ?";
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.airline = results[0];
+            complete();
+        });
+}
 /*
     function getPeoplebyHomeworld(req, res, mysql, context, complete){
       var query = "SELECT bsg_people.character_id as id, fname, lname, bsg_planets.name AS homeworld, age FROM bsg_people INNER JOIN bsg_planets ON homeworld = bsg_planets.planet_id WHERE bsg_people.homeworld = ?";
@@ -74,17 +87,32 @@ module.exports = function(){
         var callbackCount = 0;
         var context = {};
 	context.jsscripts = ["delete.js"];
-        //context.jsscripts = ["deleteperson.js","filterpeople.js","searchpeople.js"];
         var mysql = req.app.get('mysql');
         getAirlines(res, mysql, context, complete);
         function complete(){
             callbackCount++;
             if(callbackCount >= 1){
                 res.render('airline', context);
+		context.message1 = "";
             }
 
         }
     });
+
+    router.get('/:id', function(req, res){
+        var callbackCount = 0;
+        var context = {};
+        context.jsscripts = ["update.js"];
+            var mysql = req.app.get('mysql');
+            getAirline(res, mysql, context, req.params.id, complete);
+            function complete(){
+                callbackCount++;
+                if(callbackCount >= 1){
+                    res.render('update-airline', context);
+                }
+    
+            }
+});
 
     /*Display all people from a given homeworld. Requires web based javascript to delete users with AJAX*/
   /*  router.get('/filter/:homeworld', function(req, res){
@@ -137,40 +165,32 @@ module.exports = function(){
         }
     });
 */
+    /* Adds a person, redirects to the people page after adding */
+    router.post('/', function(req, res){
+	var iata = req.body.iata.toUpperCase();
+	if(/^[A-Z]{2}$/.test(iata)){
+           var mysql = req.app.get('mysql');
+           var sql = "INSERT INTO airlines (IATA_code, name, departure_terminal) VALUES (?,?,?)";
+           var inserts = [iata, req.body.name, req.body.terminal];
+           sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+               if(error){
+                   console.log(JSON.stringify(error))
+                   res.write(JSON.stringify(error));
+                   res.end();
+               }else{
+                   res.redirect('/airline');
+               }
+           });
+	}
+	else{
+	   res.redirect('/airline');
+	}
+    });
 
-    //UPDATE
-    router.get('/:IATA_code', function(req, res){
-        var callbackCount = 0;
-        var context = {};
-        context.jsscripts = ["updateAirlines.js"];
+        router.put('/:id', function(req, res){
             var mysql = req.app.get('mysql');
-            getDest(res, mysql, context, req.params.IATA_code, complete);
-            function complete(){
-                callbackCount++;
-                if(callbackCount >= 1){
-                    res.render('update-airlines', context);
-                }
-    
-            }
-        });
-    
-        function getDest(res, mysql, context, IATA_code, complete){
-            var sql = "SELECT IATA_code, name, departure_terminal FROM airlines WHERE IATA_code =?";
-            var inserts = [IATA_code];
-            mysql.pool.query(sql, inserts, function(error, results, fields){
-                if(error){
-                    res.write(JSON.stringify(error));
-                    res.end();
-                }
-                context.airlines = results[0];
-                complete();
-            });
-        }
-       
-        router.put('/:IATA_code', function(req, res){
-            var mysql = req.app.get('mysql');
-            var sql = "UPDATE airlines SET IATA_code=?, name=?, departure_terminal=?  WHERE IATA_code=?";
-            var inserts = [req.body.IATA_code, req.body.name, req.body.departure_terminal, req.params.IATA_code];
+            var sql = "UPDATE airlines SET name=?, departure_terminal=? WHERE IATA_code=?";
+            var inserts = [req.body.name, req.body.departure_terminal, req.params.id];
             sql = mysql.pool.query(sql,inserts,function(error, results, fields){
                 if(error){
                     res.write(JSON.stringify(error));
@@ -180,52 +200,11 @@ module.exports = function(){
                     res.end();
                 }
             });
-        });
-
-
-
-
-
-
-
-    /* Adds a person, redirects to the people page after adding */
-    router.post('/', function(req, res){
-   //     console.log(req.body.homeworld)
-        console.log(req.body)
-        var mysql = req.app.get('mysql');
-        var sql = "INSERT INTO airlines (IATA_code, name, departure_terminal) VALUES (?,?,?)";
-        var inserts = [req.body.iata, req.body.name, req.body.terminal];
-        sql = mysql.pool.query(sql,inserts,function(error, results, fields){
-            if(error){
-                console.log(JSON.stringify(error))
-                res.write(JSON.stringify(error));
-                res.end();
-            }else{
-                res.redirect('/airline/');
-            }
-        });
-    });
+});
 
     /* The URI that update data is sent to in order to update a person */
-/*
-    router.put('/:id', function(req, res){
-        var mysql = req.app.get('mysql');
-        console.log(req.body)
-        console.log(req.params.id)
-        var sql = "UPDATE bsg_people SET fname=?, lname=?, homeworld=?, age=? WHERE character_id=?";
-        var inserts = [req.body.fname, req.body.lname, req.body.homeworld, req.body.age, req.params.id];
-        sql = mysql.pool.query(sql,inserts,function(error, results, fields){
-            if(error){
-                console.log(error)
-                res.write(JSON.stringify(error));
-                res.end();
-            }else{
-                res.status(200);
-                res.end();
-            }
-        });
-    });
-*/
+
+
     /* Route to delete a person, simply returns a 202 upon success. Ajax will handle this. */
     router.delete('/:id', function(req, res){
         var mysql = req.app.get('mysql');
