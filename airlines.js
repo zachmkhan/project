@@ -144,7 +144,7 @@ module.exports = function(){
         var context = {};
         context.jsscripts = ["updateAirlines.js"];
             var mysql = req.app.get('mysql');
-            getDest(res, mysql, context, req.params.id, complete);
+            getDest(res, mysql, context, req.params.IATA_code, complete);
             function complete(){
                 callbackCount++;
                 if(callbackCount >= 1){
