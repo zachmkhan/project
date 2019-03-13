@@ -3,7 +3,6 @@
 <form id = "addpassenger" action="" method="post">
       First Name: <input type="text" name="fname" value=""><br>
       Last Name: <input type="text" name="lname" value=""><br>
-      Number of Visits: <input type="text" name="visits" value=""><br>
       Flight: <select name="flight"> 
         {{#each flights}}
         <option value="{{airline_designator}}{{flight_number}}">{{airline_designator}}{{flight_number}}</option>
@@ -30,7 +29,7 @@
             <td>{{number_of_visits}}</td> 
             <td>{{flight}}</td> 
             <td><button onclick="deleteRow('passenger',{{id}})">Delete</button></td>
-            <td><a href="/passenger/{{id}}">Update</a></td>
+<!--        <td><a href="/people/{{id}}">Update</a></td> -->
         </tr> 
         {{/each}} 
     </tbody> 

@@ -1,0 +1,7 @@
+
+<h1>Update {{destination.city}} {{destination.country}}:</h1>
+<form id="update-destination" action="/destination" method="post">
+    City: <input type="text" name="city" value="{{destination.city}}"><br>
+    Country: <input type="text" name="country" value="{{destination.country}}"><br>
+</form>
+<button onclick="updateRow('destination', {{destination.id}})">Update</button>

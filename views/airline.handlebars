@@ -51,7 +51,7 @@
 <h3>Airlines:</h3>
 <table>
     <thead> 
-        <th>IATA Code</th> 
+        <th>IATA Code</th>
         <th>Name</th> 
         <th>Terminal</th>
         <th>Delete</th>  
@@ -63,7 +63,7 @@
             <td>{{name}}</td> 
             <td>{{departure_terminal}}</td>
             <td><button onclick="deleteRow('airline','{{IATA_code}}')">Delete</button></td>
-            <td><a href="/airline/{{IATA_code}}">Update</a></td>
+            <td><a href="/airline/{{IATA_code}}">Update</a></td> 
         </tr> 
         {{/each}} 
     </tbody> 

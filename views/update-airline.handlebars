@@ -1,0 +1,6 @@
+<h1>Update {{airline.name}} {{airline.departure_terminal}}:</h1>
+<form id="update-airline" action="/airline" method="post">
+    Name: <input type="text" name="name" value="{{airline.name}}"><br>
+    Departure Terminal: <input type="text" name="departure_terminal" value="{{airline.departure_terminal}}"><br>
+</form>
+<button onclick="updateRow('airline', '{{airline.IATA_code}}')">Update</button>
