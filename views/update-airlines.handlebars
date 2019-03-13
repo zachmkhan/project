@@ -1,0 +1,7 @@
+<h1>Update {{airlines.IATA_code}} {{airlines.name}} {{airlines.departure_terminal}}:</h1>
+<form id="update-airlines" action="/airline" method="post">
+    IATA code: <input type="text" name="IATA_code" value="{{airlines.IATA_code}}"><br>
+    Name: <input type="text" name="name" value="{{airlines.name}}"><br>
+    Departure Terminal: <input type="text" name="departure_terminal" value="{{airlines.departure_terminal}}"><br>
+</form>
+<button onclick="updateAirlines({{airlines.IATA_code}})">Update</button>
