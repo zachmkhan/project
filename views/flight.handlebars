@@ -23,6 +23,14 @@
 </form>
 
 
+<form id='search_destinations' action='' method=''>
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Search flights by flight number starting with:</label>
+    <input id='searchName' type='text' name='searchName' value=''>
+    <input type="button" value="Search" onclick="searchSQL('flight')">
+</form>
+
+
 <h3>Flights:</h3>
 <table>
     <thead> 
@@ -42,7 +50,7 @@
             <td>{{destination}}</td> 
             <td>{{plane}}</td> 
             <td><button onclick="deleteRow('flight','{{flight_number}}')">Delete</button></td>
-<!--        <td><a href="/people/{{id}}">Update</a></td> -->
+            <td><a href="/flight/{{id}}">Update</a></td>
         </tr> 
         {{/each}} 
     </tbody> 
