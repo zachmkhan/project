@@ -73,7 +73,7 @@ module.exports = function(){
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
-	context.jsscripts = ["delete.js"];
+	context.jsscripts = ["delete.js", "search.js"];
         //context.jsscripts = ["deleteperson.js","filterpeople.js","searchpeople.js"];
         var mysql = req.app.get('mysql');
         getAirlines(res, mysql, context, complete);
@@ -104,7 +104,7 @@ module.exports = function(){
     });
 */
     /*Display all people whose name starts with a given string. Requires web based javascript to delete users with AJAX */
-    router.get('/search/:s', function(req, res){
+   /* router.get('/search/:s', function(req, res){
         var callbackCount = 0;
         var context = {};
         context.jsscripts = ["deleteperson.js","filterpeople.js","searchpeople.js"];
@@ -117,7 +117,7 @@ module.exports = function(){
                 res.render('people', context);
             }
         }
-    });
+    });*/
 /*
     /* Display one person for the specific purpose of updating people */
 /*
@@ -180,6 +180,36 @@ module.exports = function(){
                     res.end();
                 }
             });
+        });
+
+
+        //SEARCH and FILTER
+function searchD(req, res, mysql, context, complete) {
+    var query = "SELECT IATA_code, name, departure_terminal FROM airlines WHERE name LIKE " + mysql.pool.escape(req.params.s + '%');
+    console.log(query)
+    mysql.pool.query(query, function(error, results, fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        context.airlines = results;
+        complete();
+        });
+    }
+
+        /*Display all people whose name starts with a given string. Requires web based javascript to delete users with AJAX */
+        router.get('/search/:s', function(req, res){
+            var callbackCount = 0;
+            var context = {};
+            context.jsscripts = ["search.js"];
+            var mysql = req.app.get('mysql');
+            searchD(req, res, mysql, context, complete);
+            function complete(){
+                callbackCount++;
+                if(callbackCount >= 1){
+                    res.render('airline', context);
+                }
+            }
         });
 
 
