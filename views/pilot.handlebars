@@ -17,6 +17,16 @@
 </form>
 
 
+<form id='search_destinations' action='' method=''>
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Search pilots for first name starting with:</label>
+    <input id='searchName' type='text' name='searchName' value=''>
+    <input type="button" value="Search" onclick="searchSQL('pilot')">
+</form>
+
+
+
+
 <h3>Pilots:</h3>
 <table>
     <thead> 
