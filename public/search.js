@@ -1,5 +1,5 @@
-function searchSQL(key) {
+function searchSQL(temp) {
     //Key is the originating webpage
     var searchName  = document.getElementById('searchName').value
-    window.location = key +'/search/' + encodeURI(searchName)
+    window.location = '/'+temp+'/search/' + encodeURI(searchName)
 }
