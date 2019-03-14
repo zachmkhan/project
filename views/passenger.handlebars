@@ -12,6 +12,14 @@
       <input type="submit" value="Submit">
 </form>
 
+<form id='search_destinations' action='' method=''>
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Search passengers for first name starting with:</label>
+    <input id='searchName' type='text' name='searchName' value=''>
+    <input type="button" value="Search" onclick="searchSQL('passenger')">
+</form>
+
+
 
 <h3>Passengers:</h3>
 <table>
