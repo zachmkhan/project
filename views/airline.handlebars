@@ -47,6 +47,12 @@
       <input type="submit" value="Submit">
 </form>
 
+<form id='search_destinations' action='' method=''>
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Search airlines for name starting with:</label>
+    <input id='searchName' type='text' name='searchName' value=''>
+    <input type="button" value="Search" onclick="searchSQL('airline')">
+</form>
 
 <h3>Airlines:</h3>
 <table>
