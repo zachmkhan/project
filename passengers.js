@@ -28,7 +28,7 @@ module.exports = function(){
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
-	context.jsscripts = ["delete.js"];
+	context.jsscripts = ["delete.js", "search.js"];
         var mysql = req.app.get('mysql');
         getPassengers(res, mysql, context, complete);
         getFlights(res, mysql, context, complete);
@@ -91,7 +91,34 @@ module.exports = function(){
 
 
 
+//SEARCH and FILTER
+function searchD(req, res, mysql, context, complete) {
+    var query = "SELECT id, first_name, last_name, number_of_visits, CONCAT(airline, flight_number) AS flight FROM passengers WHERE first_name LIKE " + mysql.pool.escape(req.params.s + '%');
+    console.log(query)
+    mysql.pool.query(query, function(error, results, fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        context.passengers = results;
+        complete();
+        });
+    }
 
+        /*Display all people whose name starts with a given string. Requires web based javascript to delete users with AJAX */
+        router.get('/search/:s', function(req, res){
+            var callbackCount = 0;
+            var context = {};
+            context.jsscripts = ["search.js"];
+            var mysql = req.app.get('mysql');
+            searchD(req, res, mysql, context, complete);
+            function complete(){
+                callbackCount++;
+                if(callbackCount >= 1){
+                    res.render('passenger', context);
+                }
+            }
+        });
 
 
 
