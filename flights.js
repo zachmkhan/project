@@ -50,7 +50,7 @@ module.exports = function(){
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
-	context.jsscripts = ["delete.js", "search.js"];
+	context.jsscripts = ["delete.js", "search.js", "filter.js"];
         var mysql = req.app.get('mysql');
         getPlanes(res, mysql, context, complete);
         getAirlines(res, mysql, context, complete);
@@ -99,6 +99,44 @@ module.exports = function(){
                 }
             });
 
+
+
+
+
+
+            //Get Planes by airline
+            function getFilter(req, res, mysql, context, complete){
+                var query = "SELECT CONCAT(airline_designator, flight_number) AS flight_number, departure_time, arrival_time, destinations.city AS destination, plane FROM flights INNER JOIN destinations ON destinations.id = flights.destination WHERE airline_designator =?";
+                console.log(req.params)
+                var inserts = [req.params.name]
+                mysql.pool.query(query, inserts, function(error, results, fields){
+                      if(error){
+                          res.write(JSON.stringify(error));
+                          res.end();
+                      }
+                      context.flights = results;
+                      complete();
+                  });
+              }
+
+
+                        /*Display all people from a given homeworld. Requires web based javascript to delete users with AJAX*/
+    router.get('/filter/:name', function(req, res){
+        var callbackCount = 0;
+        var context = {};
+        context.jsscripts = ["delete.js","filter.js","search.js"];
+        var mysql = req.app.get('mysql');
+        getFilter(req,res, mysql, context, complete);
+        //getPlanes(res, mysql, context, complete);
+        //getAirlines(res, mysql, context, complete);
+        function complete(){
+            callbackCount++;
+            if(callbackCount >= 1){
+                res.render('flight', context);
+            }
+
+        }
+    });
 
 
 
