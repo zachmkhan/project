@@ -27,7 +27,7 @@ module.exports = function(){
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
-	context.jsscripts = ["delete.js", "search.js"];
+	context.jsscripts = ["delete.js", "search.js", "filter.js"];
         var mysql = req.app.get('mysql');
         getPlanes(res, mysql, context, complete);
         getAirlines(res, mysql, context, complete);
@@ -111,7 +111,7 @@ module.exports = function(){
                 //console.log("debug1");
                 var callbackCount = 0;
                 var context = {};
-                context.jsscripts = ["search.js"];
+                context.jsscripts = ["search.js", "filter.js", "delete.js"];
                 var mysql = req.app.get('mysql');
                 //console.log("debug2");
                 searchD(req, res, mysql, context, complete);
@@ -124,6 +124,46 @@ module.exports = function(){
                     }
                 }
             });
+
+
+            //Get Planes by airline
+            function getFilter(req, res, mysql, context, complete){
+                var query = "SELECT id, airlines.name AS airline, model FROM planes INNER JOIN airlines ON airlines.IATA_code = planes.airline WHERE airlines.name LIKE" + mysql.pool.escape(req.params.name + '%');;
+                console.log(req.params)
+                var inserts = [req.params.name]
+                mysql.pool.query(query, inserts, function(error, results, fields){
+                      if(error){
+                          res.write(JSON.stringify(error));
+                          res.end();
+                      }
+                      context.planes = results;
+                      complete();
+                  });
+              }
+
+
+                        /*Display all people from a given homeworld. Requires web based javascript to delete users with AJAX*/
+    router.get('/filter/:name', function(req, res){
+        var callbackCount = 0;
+        var context = {};
+        context.jsscripts = ["delete.js","filter.js","search.js"];
+        var mysql = req.app.get('mysql');
+        getFilter(req,res, mysql, context, complete);
+        //getPlanes(res, mysql, context, complete);
+        //getAirlines(res, mysql, context, complete);
+        function complete(){
+            callbackCount++;
+            if(callbackCount >= 1){
+                res.render('plane', context);
+            }
+
+        }
+    });
+
+
+
+
+
 
 
 
