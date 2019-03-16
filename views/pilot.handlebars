@@ -25,6 +25,17 @@
 </form>
 
 
+<form id='filter_people' action='' method=''>
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Filter by employer </label>
+    <select id='homeworld_filter' name="homeworld_filter"> 
+        {{#each airlines}}
+        <option value={{name}}>{{name}}</option>
+        {{/each}}
+    </select><br>
+    <input type="button" value="Filter" onclick="filterSQL('pilot')">
+</form>
+
 
 
 <h3>Pilots:</h3>

@@ -31,6 +31,18 @@
 </form>
 
 
+<form id='filter_people' action='' method=''>
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Filter by airline </label>
+    <select id='homeworld_filter' name="homeworld_filter"> 
+        {{#each airlines}}
+        <option value="{{IATA_code}}">{{name}}</option>
+        {{/each}}
+    </select><br>
+    <input type="button" value="Filter" onclick="filterSQL('flight')">
+</form>
+
+
 <h3>Flights:</h3>
 <table>
     <thead> 
