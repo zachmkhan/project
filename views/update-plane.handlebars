@@ -1,0 +1,10 @@
+<h1>Update Plane's Airline and Model:</h1>
+<form id="update-plane" action="/plane" method="post">
+    Airline: <select name="airline" id = "plane-selector"> 
+        {{#each airlines}}
+        <option value="{{IATA_code}}">{{name}}</option>
+        {{/each}}</select><br>
+    Model: <input type="text" name="model" value="{{plane.model}}"><br>
+</form>
+<button onclick="updateRow('plane', {{plane.id}})">Update</button>
+<script defer>selector("{{plane.airline}}", "plane");</script>

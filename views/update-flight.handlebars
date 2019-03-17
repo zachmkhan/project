@@ -1,0 +1,25 @@
+<h1>Update {{flight.airline_designator}}{{flight.flight_number}} {{flight.departure_time}} {{flight.arrival_time}} {{flight.destination}} {{flight.plane}}:</h1>
+<form id="update-flight" action="/flight" method="post">
+   Airline: <select name="airline" id = "airline-selector> 
+        {{#each airlines}}
+        <option value="{{IATA_code}}">{{name}}</option>
+        {{/each}}
+    </select><br>
+    Flight Number: <input type="text" name="flight" value="{{flight.flight_number}}"><br>
+    Departure Time: <input type="datetime-local" name="departure" value="{{pilot.departure_time}}"><br>
+    Departure Time: <input type="datetime-local" name="arrival" value="{{pilot.arrival_time}}"><br>
+    Destination: <select name="destination" id = "destination-selector"> 
+        {{#each destinations}}
+        <option value="{{id}}">{{city}}</option>
+        {{/each}}
+      </select><br>
+    Plane: <select name="plane" id = "plane-selector"> 
+        {{#each planes}}
+        <option value="{{id}}">{{id}}</option>
+        {{/each}}
+      </select><br>
+</form>
+<button onclick="updateRow('flight', '{{flight.airline_designator}}{{flight.flight_number}}')">Update</button>
+<script defer>selector("{{flight.airline_designator}}", 'airline');</script>
+<script defer>selector("{{flight.destination}}", 'destination');</script>
+<script defer>selector("{{flight.plane}}", 'plane');</script>
