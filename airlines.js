@@ -169,37 +169,56 @@ module.exports = function(){
     router.post('/', function(req, res){
 	var iata = req.body.iata.toUpperCase();
 	if(/^[A-Z]{2}$/.test(iata)){
-           var mysql = req.app.get('mysql');
-           var sql = "INSERT INTO airlines (IATA_code, name, departure_terminal) VALUES (?,?,?)";
-           var inserts = [iata, req.body.name, req.body.terminal];
-           sql = mysql.pool.query(sql,inserts,function(error, results, fields){
-               if(error){
-                   console.log(JSON.stringify(error))
-                   res.write(JSON.stringify(error));
-                   res.end();
-               }else{
-                   res.redirect('/airline');
-               }
-           });
+	   if(/^[0-9]$/.test(req.body.terminal) && req.body.terminal <= 5){
+           	var mysql = req.app.get('mysql');
+       	   	var sql = "INSERT INTO airlines (IATA_code, name, departure_terminal) VALUES (?,?,?)";
+           	var inserts = [iata, req.body.name, req.body.terminal];
+           	sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+           	    if(error){
+           	        console.log(JSON.stringify(error))
+           	        res.write(JSON.stringify(error));
+            	        res.end();
+            	    }else{
+           	        res.redirect('/airline');
+           	    }
+          	 });
+	   }
+	   else{
+		   context = {};
+		   context.message = 'Please enter a number between 1 and 5 for the airline terminal.';
+		   context.table = 'airline';
+		   res.render('message', context);
+	   }
 	}
 	else{
-	   res.redirect('/airline');
+	   context = {};
+	   context.message = 'Please use an IATA code that consists of two letters.';
+	   context.table = 'airline';
+	   res.render('message', context);
 	}
     });
 
         router.put('/:id', function(req, res){
-            var mysql = req.app.get('mysql');
-            var sql = "UPDATE airlines SET name=?, departure_terminal=? WHERE IATA_code=?";
-            var inserts = [req.body.name, req.body.departure_terminal, req.params.id];
-            sql = mysql.pool.query(sql,inserts,function(error, results, fields){
-                if(error){
-                    res.write(JSON.stringify(error));
-                    res.end();
-                }else{
-                    res.status(200);
-                    res.end();
-                }
-            });
+	   if(/^[0-9]$/.test(req.body.departure_terminal) && req.body.departure_terminal <= 5){
+        	var mysql = req.app.get('mysql');
+      		var sql = "UPDATE airlines SET name=?, departure_terminal=? WHERE IATA_code=?";
+        	var inserts = [req.body.name, req.body.departure_terminal, req.params.id];
+     	       	sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+                   if(error){
+                    	res.write(JSON.stringify(error));
+                    	res.end();
+                   }else{
+                    	res.status(200);
+                    	res.end();
+                   }
+               });
+	   }
+	   else{
+		   context = {};
+		   context.message = 'Please retry using a number between 1 and 5 for the airline terminal.';
+		   context.table = 'airline';
+		   res.render('message', context);
+	   }
 });
 
     /* The URI that update data is sent to in order to update a person */
@@ -207,19 +226,19 @@ module.exports = function(){
 
     /* Route to delete a person, simply returns a 202 upon success. Ajax will handle this. */
     router.delete('/:id', function(req, res){
-        var mysql = req.app.get('mysql');
-        var sql = "DELETE FROM airlines WHERE IATA_code = ?";
-	console.log(req.params.id);
-        var inserts = [req.params.id];
-        sql = mysql.pool.query(sql, inserts, function(error, results, fields){
-            if(error){
-                res.write(JSON.stringify(error));
-                res.status(400);
-                res.end();
-            }else{
-                res.status(202).end();
-            }
-        })
+           var mysql = req.app.get('mysql');
+           var sql = "DELETE FROM airlines WHERE IATA_code = ?";
+	   console.log(req.params.id);
+           var inserts = [req.params.id];
+           sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+           	 if(error){
+            	    res.write(JSON.stringify(error));
+             	    res.status(400);
+        	        res.end();
+        	    }else{
+        	        res.status(202).end();
+           	 }
+       	   })
     })
 
     return router;
