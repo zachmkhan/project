@@ -1,20 +1,41 @@
 <html>
 
+ <!--https://www.pexels.com/photo/stairs-people-airport-escalators-4610/ Royality free photo-->
+<link rel="stylesheet" href="/static/database.css">
+<link rel="stylesheet" href="/static/table.css">
+<link rel="stylesheet" href="/static/top.css">
+
+
+
+<div class="topnav">
+  <a href="/pilot">Pilot</a>
+  <a href="/airline">Airline</a>
+  <a href="/flight">Flight</a>
+  <a href="/passenger">Passenger</a>
+  <a href="/destination">Destination</a>
+  <a href="/plane">Plane</a>
+</div>
+
+<div class="submissions"><h3>Airlines:</h3>
 
 <form id = "addairline" action="" method="post">
-      IATA Code: <input type="text" name="iata" value=""><br>
-      Name: <input type="text" name="name" value=""><br>
-      Departure terminal: <input type="text" name="terminal" value=""><br>
+      Add a new airline:<br>
+      <input type="text" name="iata" value="IATA Code: "><br>
+      <input type="text" name="name" value="Name: "><br>
+      <input type="text" name="terminal" value="Departure terminal: ">
       <input type="submit" value="Submit">
 </form>
+<br>
+<br>
 
 
 <form id='search_airlines' action='' method=''>
-<!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Search airlines for name starting with:</label>
-    <input id='searchName' type='text' name='searchName' value=''>
+      Search airlines for name:<br>
+    <input id='searchName' type='text' name='searchName' value='Name search:'>
     <input type="button" value="Search" onclick="searchSQL('airline')">
-</form>
+</form></div>
+<div><img src="https://images.pexels.com/photos/4610/stairs-people-airport-escalators.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"></div>
+
 
 <h3>Airlines:</h3>
 <table>
@@ -31,7 +52,7 @@
             <td>{{name}}</td> 
             <td>{{departure_terminal}}</td>
             <td><button onclick="deleteRow('airline','{{IATA_code}}')">Delete</button></td>
-            <td><a href="/airline/{{IATA_code}}">Update</a></td> 
+            <td><a class="update" href="/airline/{{IATA_code}}">Update</a></td> 
         </tr> 
         {{/each}} 
     </tbody> 
