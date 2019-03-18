@@ -1,35 +1,60 @@
 <html>
 
+    <!--https://www.pexels.com/photo/stairs-people-airport-escalators-4610/ Royality free photo-->
+<link rel="stylesheet" href="/static/database.css">
+<link rel="stylesheet" href="/static/table.css">
+<link rel="stylesheet" href="/static/top.css">
+
+
+
+<div class="topnav">
+  <a href="/pilot">Pilot</a>
+  <a href="/airline">Airline</a>
+  <a href="/flight">Flight</a>
+  <a href="/passenger">Passenger</a>
+  <a href="/destination">Destination</a>
+  <a href="/plane">Plane</a>
+</div>
+
+<div class="submissions"><h3>Planes:</h3>
+
 <form id = "addplane" action="" method="post">
-      Airline: <select name="airline"> 
+    Add a new plane:<br>
+      <select name="airline"> 
         {{#each airlines}}
         <option value="{{IATA_code}}">{{name}}</option>
         {{/each}}
       </select><br>
-      Model: <input type="text" name="model" value=""><br>
+      <input type="text" name="model" value="Model: "><br>
       <input type="submit" value="Submit">
 </form>
+<br>
+<br>
 
 <form id='search_destinations' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Search planes for airline starting with:</label>
-    <input id='searchName' type='text' name='searchName' value=''>
+    Search planes for airline:<br>
+    <input id='searchName' type='text' name='searchName' value='Airline search:'>
     <input type="button" value="Search" onclick="searchSQL('plane')">
 </form>
+<br>
+<br>
 
 <form id='filter_people' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Filter by airline </label>
+    Filter by airline: <br>
     <select id='homeworld_filter' name="homeworld_filter"> 
         {{#each airlines}}
         <option value={{name}}>{{name}}</option>
         {{/each}}
-    </select><br>
+    </select>
     <input type="button" value="Filter" onclick="filterSQL('plane')">
-</form>
+</form></div>
+<div><img src="https://images.pexels.com/photos/4610/stairs-people-airport-escalators.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"></div>
 
 
-<h3>Planes:</h3>
+
+
 <table>
     <thead> 
         <th>Plane Number</th> 
@@ -44,9 +69,10 @@
             <td>{{airline}}</td> 
             <td>{{model}}</td> 
             <td><button onclick="deleteRow('plane',{{id}})">Delete</button></td>
-            <td><a href="/plane/{{id}}">Update</a></td>
+            <td><a class="update" href="/plane/{{id}}">Update</a></td>
         </tr> 
         {{/each}} 
     </tbody> 
 </table> 
+<a href = "/plane>{{return}}</a>
 </html>

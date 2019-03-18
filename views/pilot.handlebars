@@ -1,44 +1,68 @@
 <html>
+    <!--https://www.pexels.com/photo/stairs-people-airport-escalators-4610/ Royality free photo-->
+<link rel="stylesheet" href="/static/database.css">
+<link rel="stylesheet" href="/static/table.css">
+<link rel="stylesheet" href="/static/top.css">
+
+
+
+<div class="topnav">
+  <a href="/pilot">Pilot</a>
+  <a href="/airline">Airline</a>
+  <a href="/flight">Flight</a>
+  <a href="/passenger">Passenger</a>
+  <a href="/destination">Destination</a>
+  <a href="/plane">Plane</a>
+</div>
+<div class="submissions"><h3>Pilots:</h3>
 
 <form id = "addpilot" action="" method="post">
-      First Name: <input type="text" name="fname" value=""><br>
-      Last Name: <input type="text" name="lname" value=""><br>
-      Employer: <select name="employer"> 
+    Add new Pilot:<br>
+      <input type="text" name="fname" value="First Name: "><br>
+      <input type="text" name="lname" value="Last Name: "><br>
+      
+      <select name="employer"> 
         {{#each airlines}}
         <option value="{{name}}">{{name}}</option>
         {{/each}}
       </select><br>
-      Flight: <select name="flight"> 
+      <select name="flight"> 
         {{#each flights}}
         <option value="{{airline_designator}}{{flight_number}}">{{airline_designator}}{{flight_number}}</option>
         {{/each}}
-      </select><br>
+      </select>
       <input type="submit" value="Submit">
 </form>
+<br>
+<br>
 
 
 <form id='search_destinations' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Search pilots for first name starting with:</label>
-    <input id='searchName' type='text' name='searchName' value=''>
+    <label> Search pilots by first name:<br>
+    <input id='searchName' type='text' name='searchName' value='Search name'>
     <input type="button" value="Search" onclick="searchSQL('pilot')">
 </form>
+<br>
+<br>
 
 
 <form id='filter_people' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Filter by employer </label>
+    Filter by employer<br>
     <select id='homeworld_filter' name="homeworld_filter"> 
         {{#each airlines}}
         <option value={{name}}>{{name}}</option>
         {{/each}}
-    </select><br>
+    </select>
     <input type="button" value="Filter" onclick="filterSQL('pilot')">
-</form>
+</form></div>
+<div><img src="https://images.pexels.com/photos/4610/stairs-people-airport-escalators.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"></div>
 
 
 
-<h3>Pilots:</h3>
+
+
 <table>
     <thead> 
         <th>First Name</th> 
@@ -55,9 +79,10 @@
             <td>{{employer}}</td> 
             <td>{{flight}}</td> 
             <td><button onclick="deleteRow('pilot',{{id}})">Delete</button></td>
-            <td><a href="/pilot/{{id}}">Update</a></td>
+            <td><a class="update" href="/pilot/{{id}}">Update</a></td>
         </tr> 
         {{/each}} 
     </tbody> 
 </table> 
+<a href = "/pilot">{{return}}</a>
 </html>

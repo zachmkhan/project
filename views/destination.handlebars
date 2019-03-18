@@ -1,21 +1,40 @@
 <html>
+<!--https://www.pexels.com/photo/stairs-people-airport-escalators-4610/ Royality free photo-->
+<link rel="stylesheet" href="/static/database.css">
+<link rel="stylesheet" href="/static/table.css">
+<link rel="stylesheet" href="/static/top.css">
+
+
+
+<div class="topnav">
+  <a href="/pilot">Pilot</a>
+  <a href="/airline">Airline</a>
+  <a href="/flight">Flight</a>
+  <a href="/passenger">Passenger</a>
+  <a href="/destination">Destination</a>
+  <a href="/plane">Plane</a>
+</div>
+
+<div class="submissions"><h3>Destinations:</h3>
 
 <form id = "adddestination" action="" method="post">
-      City: <input type="text" name="city" value=""><br>
-      Country: <input type="text" name="country" value=""><br>
+      Add new destination:<br>
+      <input type="text" name="city" value="City: "><br>
+      <input type="text" name="country" value="Country: ">
       <input type="submit" value="Submit">
 </form>
-
+<br>
+<br>
 
 <form id='search_destinations' action='' method=''>
-<!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Search destinations for city starting with:</label>
-    <input id='searchName' type='text' name='searchName' value=''>
+    Search destinations for city starting with:<br>
+    <input id='searchName' type='text' name='searchName' value='City Search:'>
     <input type="button" value="Search" onclick="searchSQL('destination')">
-</form>
+</form></div>
+<div><img src="https://images.pexels.com/photos/4610/stairs-people-airport-escalators.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"></div>
 
 
-<h3>Destinations:</h3>
+
 <table>
     <thead> 
         <th>City</th> 
@@ -28,9 +47,10 @@
             <td>{{city}}</td> 
             <td>{{country}}</td> 
             <td><button onclick="deleteRow('destination',{{id}})">Delete</button></td>
-            <td><a href="/destination/{{id}}">Update</a></td>
+            <td><a class="update" href="/destination/{{id}}">Update</a></td>
         </tr> 
         {{/each}} 
     </tbody> 
 </table> 
+<a href = "/destination">{{return}}</a>
 </html>
