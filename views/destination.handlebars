@@ -6,6 +6,13 @@
       <input type="submit" value="Submit">
 </form>
 
+<form id='search_destinations' action='' method=''>
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Search destinations for city starting with:</label>
+    <input id='searchName' type='text' name='searchName' value=''>
+    <input type="button" value="Search" onclick="searchSQL('destination')">
+</form>
+
 
 <h3>Destinations:</h3>
 <table>
@@ -25,4 +32,5 @@
         {{/each}} 
     </tbody> 
 </table> 
+<a href = "/destination">{{return}}</a>
 </html>

@@ -7,8 +7,8 @@
         {{/each}}
     </select><br>
     Flight Number: <input type="text" name="flight" value="{{flight.flight_number}}"><br>
-    Departure Time: <input type="text" name="departure" value="{{flight.departure_time}}"><br>
-    Arrival Time: <input type="text" name="arrival" value="{{flight.arrival_time}}"><br>
+    Departure Time: <input type="datetime-local" name="departure" value="{{flight.departure_time}}"><br>
+    Arrival Time: <input type="datetime-local" name="arrival" value="{{flight.arrival_time}}"><br>
     Destination: <select name="destination" id = "destination-selector"> 
         {{#each destinations}}
         <option value="{{id}}">{{city}}</option>
