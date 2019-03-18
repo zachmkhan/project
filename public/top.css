@@ -1,0 +1,16 @@
+img {
+    max-width: 45%;
+    height: auto;
+    float: right;
+    filter: blur(1px);
+
+  }
+
+.submissions{
+        position: absolute;
+        left: 150px;
+}
+
+.back{
+            background-color: rgb(185, 185, 185);
+}
