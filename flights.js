@@ -64,7 +64,7 @@ module.exports = function(){
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
-	context.jsscripts = ["delete.js"];
+	context.jsscripts = ["delete.js", "search.js", "filter.js"];
         var mysql = req.app.get('mysql');
         getPlanes(res, mysql, context, complete);
         getAirlines(res, mysql, context, complete);
@@ -78,6 +78,75 @@ module.exports = function(){
 
         }
     });
+
+    //SEARCH and FILTER
+    function searchFlights(req, res, mysql, context, complete) {
+        var query = "SELECT CONCAT(airline_designator, flight_number) AS flight_number, departure_time, arrival_time, destinations.city AS destination, plane FROM flights INNER JOIN destinations ON destinations.id = flights.destination WHERE CONCAT(airline_designator, flight_number) LIKE " + mysql.pool.escape(req.params.s + '%');
+        console.log(query)
+        mysql.pool.query(query, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.flights = results;
+            complete();
+            });
+        }
+    
+            /*Display all people whose name starts with a given string. Requires web based javascript to delete users with AJAX */
+            router.get('/search/:s', function(req, res){
+                var callbackCount = 0;
+                var context = {};
+                context.jsscripts = ["search.js"];
+                var mysql = req.app.get('mysql');
+                searchFlights(req, res, mysql, context, complete);
+	        context.return = "Return to unfiltered table";
+                function complete(){
+                    callbackCount++;
+                    if(callbackCount >= 1){
+                        res.render('flight', context);
+                    }
+                }
+            });
+
+
+
+
+
+
+            //Get Planes by airline
+            function getFilter(req, res, mysql, context, complete){
+                var query = "SELECT CONCAT(airline_designator, flight_number) AS flight_number, departure_time, arrival_time, destinations.city AS destination, plane FROM flights INNER JOIN destinations ON destinations.id = flights.destination WHERE airline_designator =?";
+                console.log(req.params)
+                var inserts = [req.params.name]
+                mysql.pool.query(query, inserts, function(error, results, fields){
+                      if(error){
+                          res.write(JSON.stringify(error));
+                          res.end();
+                      }
+                      context.flights = results;
+                      complete();
+                  });
+              }
+
+
+                        /*Display all people from a given homeworld. Requires web based javascript to delete users with AJAX*/
+    router.get('/filter/:name', function(req, res){
+        var callbackCount = 0;
+        var context = {};
+        context.jsscripts = ["delete.js","filter.js","search.js"];
+        var mysql = req.app.get('mysql');
+        getFilter(req,res, mysql, context, complete);
+ 	context.return = "Return to unfiltered table";
+        function complete(){
+            callbackCount++;
+            if(callbackCount >= 1){
+                res.render('flight', context);
+            }
+
+        }
+    });
+
 
     router.post('/', function(req, res){
         console.log(req.body)

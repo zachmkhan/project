@@ -29,7 +29,7 @@ module.exports = function(){
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
-	context.jsscripts = ["delete.js"];
+	context.jsscripts = ["delete.js", "search.js"];
         var mysql = req.app.get('mysql');
         getDestinations(res, mysql, context, complete);
         function complete(){
@@ -71,9 +71,35 @@ module.exports = function(){
         });
 });
 
+    function searchDestinations(req, res, mysql, context, complete){
+    var query = "SELECT id, city, country FROM destinations WHERE city LIKE " + mysql.pool.escape(req.params.s + '%');
+    console.log(query)
+    mysql.pool.query(query, function(error, results, fields){
+        if(error){
+            res.write(JSON.stringify(error));
+            res.end();
+        }
+        context.destinations = results;
+        complete();
+        });
+   }
+
+        router.get('/search/:s', function(req, res){
+            var callbackCount = 0;
+            var context = {};
+            context.jsscripts = ["search.js", "delete.js"];
+            var mysql = req.app.get('mysql');
+            searchDestinations(req, res, mysql, context, complete);
+	    context.return = "Return to unfiltered table";
+            function complete(){
+                callbackCount++;
+                if(callbackCount >= 1){
+                    res.render('destination', context);
+                }
+            }
+	});
+
     router.post('/', function(req, res){
-   //     console.log(req.body.homeworld)
-        console.log(req.body)
         var mysql = req.app.get('mysql');
         var sql = "INSERT INTO destinations (city, country) VALUES (?,?)";
         var inserts = [req.body.city, req.body.country];
@@ -87,6 +113,8 @@ module.exports = function(){
             }
         });
     });
+
+
 
     router.delete('/:id', function(req, res){
         var mysql = req.app.get('mysql');
