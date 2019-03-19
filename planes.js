@@ -141,7 +141,7 @@ module.exports = function(){
                 function complete(){
                     callbackCount++;
                     if(callbackCount >= 2){ //Might need to be 2
-                        res.render('update-planes', context);
+                        res.render('update-plane', context);
                     }
         
                 }
