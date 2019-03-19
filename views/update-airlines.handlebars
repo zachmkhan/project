@@ -1,7 +1,46 @@
-<h1>Update {{airlines.IATA_code}} {{airlines.name}} {{airlines.departure_terminal}}:</h1>
-<form id="update-airlines" action="/airline" method="post">
-    IATA code: <input type="text" name="IATA_code" value="{{airlines.IATA_code}}"><br>
-    Name: <input type="text" name="name" value="{{airlines.name}}"><br>
-    Departure Terminal: <input type="text" name="departure_terminal" value="{{airlines.departure_terminal}}"><br>
+<link rel="stylesheet" href="/static/update.css">
+<link rel="stylesheet" href="/static/table.css">
+
+<div class="topnav">
+  <a href="/airline">Return to airline page</a>
+</div>
+
+<div class="box"><h1>Update {{airline.name}} {{airline.departure_terminal}}:</h1>
+<form id="update-airline" action="/airline" method="post" onsubmit="return checkEmpty('name', 'departure_terminal')">
+    Name: <br>
+    <input type="text" name="name" id="name" value="{{airline.name}}"><br>
+    Departure Terminal: 
+    <br><input type="text" name="departure_terminal" id="departure_terminal" value="{{airline.departure_terminal}}">
 </form>
-<button onclick="updateAirlines({{airlines.IATA_code}})">Update</button>
+<button onclick="updateRow('airline', '{{airline.IATA_code}}')">Update</button></div>
+
+<div><img src="https://images.pexels.com/photos/4610/stairs-people-airport-escalators.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"></div>
+
+<table>
+    <thead> 
+        <th></th>  
+    </thead> 
+    <tbody>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+    </tbody> 
+</table> 
