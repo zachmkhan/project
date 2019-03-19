@@ -13,6 +13,19 @@ module.exports = function(){
         });
     }
 
+    function getDestination(res, mysql, context, id, complete){
+        var sql = "SELECT id, city, country FROM destinations WHERE id = ?";
+        var inserts = [id];
+        mysql.pool.query(sql, inserts, function(error, results, fields){
+            if(error){
+                res.write(JSON.stringify(error));
+                res.end();
+            }
+            context.destination = results[0];
+            complete();
+        });
+}
+
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
@@ -28,14 +41,12 @@ module.exports = function(){
         }
     });
 
-
-    //UPDATE
     router.get('/:id', function(req, res){
     var callbackCount = 0;
     var context = {};
-	context.jsscripts = ["updateDestinations.js"];
+	context.jsscripts = ["update.js"];
         var mysql = req.app.get('mysql');
-        getDest(res, mysql, context, req.params.id, complete);
+        getDestination(res, mysql, context, req.params.id, complete);
         function complete(){
             callbackCount++;
             if(callbackCount >= 1){
@@ -45,19 +56,6 @@ module.exports = function(){
         }
     });
 
-    function getDest(res, mysql, context, id, complete){
-        var sql = "SELECT id, city, country FROM destinations WHERE id = ?";
-        var inserts = [id];
-        mysql.pool.query(sql, inserts, function(error, results, fields){
-            if(error){
-                res.write(JSON.stringify(error));
-                res.end();
-            }
-            context.destinations = results[0];
-            complete();
-        });
-    }
-   
     router.put('/:id', function(req, res){
         var mysql = req.app.get('mysql');
         var sql = "UPDATE destinations SET city=?, country=? WHERE id=?";
@@ -71,12 +69,9 @@ module.exports = function(){
                 res.end();
             }
         });
-    });
+});
 
-
-
-    //SEARCH and FILTER
-    function searchD(req, res, mysql, context, complete) {
+    function searchDestinations(req, res, mysql, context, complete){
     var query = "SELECT id, city, country FROM destinations WHERE city LIKE " + mysql.pool.escape(req.params.s + '%');
     console.log(query)
     mysql.pool.query(query, function(error, results, fields){
@@ -87,36 +82,24 @@ module.exports = function(){
         context.destinations = results;
         complete();
         });
-    }
+   }
 
-        /*Display all people whose name starts with a given string. Requires web based javascript to delete users with AJAX */
         router.get('/search/:s', function(req, res){
             var callbackCount = 0;
             var context = {};
-            context.jsscripts = ["search.js"];
+            context.jsscripts = ["search.js", "delete.js"];
             var mysql = req.app.get('mysql');
-            searchD(req, res, mysql, context, complete);
+            searchDestinations(req, res, mysql, context, complete);
+	    context.return = "Return to unfiltered table";
             function complete(){
                 callbackCount++;
                 if(callbackCount >= 1){
                     res.render('destination', context);
                 }
             }
-        });
-
-
-
-
-
-
-
-
-
-
+	});
 
     router.post('/', function(req, res){
-   //     console.log(req.body.homeworld)
-        console.log(req.body)
         var mysql = req.app.get('mysql');
         var sql = "INSERT INTO destinations (city, country) VALUES (?,?)";
         var inserts = [req.body.city, req.body.country];
@@ -130,6 +113,8 @@ module.exports = function(){
             }
         });
     });
+
+
 
     router.delete('/:id', function(req, res){
         var mysql = req.app.get('mysql');
