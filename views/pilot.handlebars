@@ -36,6 +36,18 @@
 </form>
 
 
+<form id='get_Passengers' action='' method=''>
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Get list of passengers for a specific pilot </label>
+    <select id='getList' name="getList"> 
+        {{#each pilots}}
+        <option value={{id}}>{{first_name}} {{last_name}}</option>
+        {{/each}}
+    </select><br>
+    <input type="button" value="Filter" onclick="getPList('pilot')">
+</form>
+
+
 <h3>Pilots:</h3>
 <table>
     <thead> 

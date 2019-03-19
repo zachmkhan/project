@@ -1,0 +1,24 @@
+<html>
+
+<h3>List of pilots who have flown with passenger {{passengers.0.pa_fname}} {{passengers.0.pa_lname}}</h3>
+<table>
+    <thead> 
+        <th>First Name</th> 
+        <th>Last Name</th> 
+        <th>Departure Date</th> 
+        <th>Flight</th>  
+        <th>Delete</th>  
+    </thead> 
+    <tbody>
+        {{#each pilots}} 
+        <tr> 
+            <td>{{first_name}}</td> 
+            <td>{{last_name}}</td> 
+            <td>{{departure}}</td> 
+            <td>{{flight}}</td> 
+        </tr> 
+        {{/each}} 
+    </tbody> 
+</table>
+<a href = "/passenger">{{return}}</a> 
+</html>
