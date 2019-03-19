@@ -25,6 +25,8 @@ module.exports = function(){
         });
     }
 
+
+
     function getAirlines(res, mysql, context, complete){
         mysql.pool.query("SELECT name FROM airlines", function(error, results, fields){
             if(error){
@@ -36,29 +38,7 @@ module.exports = function(){
         });
     }
 
-
-
-
-
-        //UPDATE
-        router.get('/:id', function(req, res){
-            var callbackCount = 0;
-            var context = {};
-            context.jsscripts = ["updatePilots.js", "selectFlights.js", "search.js"];
-                var mysql = req.app.get('mysql');
-                getP(res, mysql, context, req.params.id, complete);
-                getFlights(res, mysql, context, complete);
-                getAirlines(res, mysql, context, complete);
-                function complete(){
-                    callbackCount++;
-                    if(callbackCount >= 3){
-                        res.render('update-pilots', context);
-                    }
-        
-                }
-            });
-
-            function getP(res, mysql, context, id, complete){
+            function getPilot(res, mysql, context, id, complete){
                 var sql = "SELECT id, first_name, last_name, employer, CONCAT(airline, flight_number) AS flight FROM pilots WHERE id=?";
                 var inserts = [id];
                 mysql.pool.query(sql, inserts, function(error, results, fields){
@@ -66,31 +46,29 @@ module.exports = function(){
                         res.write(JSON.stringify(error));
                         res.end();
                     }
-                    context.pilots = results[0];
+                    context.pilot = results[0];
                     complete();
                 });
+	}
+
+    router.get('/', function(req, res){
+        var callbackCount = 0;
+        var context = {};
+	context.jsscripts = ["delete.js", "filter.js","search.js", "empty.js"];
+        var mysql = req.app.get('mysql');
+        getPilots(res, mysql, context, complete);
+        getAirlines(res, mysql, context, complete);
+        getFlights(res, mysql, context, complete);
+        function complete(){
+            callbackCount++;
+            if(callbackCount >= 3){
+                res.render('pilot', context);
             }
-           
-            router.put('/:id', function(req, res){
-                var mysql = req.app.get('mysql');
-                var sql = "UPDATE pilots SET first_name=?, last_name=?, employer=?, airline=?, flight_number=?   WHERE id=?"; 
-                var inserts = [req.body.first_name, req.body.last_name, req.body.employer, req.body.flight.substring(0,2), req.body.flight.substring(2), req.params.id];
-                sql = mysql.pool.query(sql,inserts,function(error, results, fields){
-                    if(error){
-                        res.write(JSON.stringify(error));
-                        res.end();
-                    }else{
-                        res.status(200);
-                        res.end();
-                    }
-                });
-            });
 
-
-
-
+        }
+    });
                 //SEARCH and FILTER
-    function searchD(req, res, mysql, context, complete) {
+    function searchPilots(req, res, mysql, context, complete) {
         var query = "SELECT id, first_name, last_name, employer, CONCAT(airline, flight_number) AS flight FROM pilots WHERE first_name LIKE " + mysql.pool.escape(req.params.s + '%');
         console.log(query)
         mysql.pool.query(query, function(error, results, fields){
@@ -107,9 +85,10 @@ module.exports = function(){
             router.get('/search/:s', function(req, res){
                 var callbackCount = 0;
                 var context = {};
-                context.jsscripts = ["search.js"];
+                context.jsscripts = ["search.js", "empty.js"];
                 var mysql = req.app.get('mysql');
-                searchD(req, res, mysql, context, complete);
+                searchPilots(req, res, mysql, context, complete);
+	        context.return = "Return to unfiltered table";
                 function complete(){
                     callbackCount++;
                     if(callbackCount >= 1){
@@ -122,7 +101,6 @@ module.exports = function(){
             
             function getFilter(req, res, mysql, context, complete){
                 var query = "SELECT id, first_name, last_name, employer, CONCAT(airline, flight_number) AS flight FROM pilots WHERE employer LIKE" + mysql.pool.escape(req.params.name + '%');
-                console.log(req.params)
                 var inserts = [req.params.name]
                 mysql.pool.query(query, inserts, function(error, results, fields){
                       if(error){
@@ -139,9 +117,10 @@ module.exports = function(){
     router.get('/filter/:name', function(req, res){
         var callbackCount = 0;
         var context = {};
-        context.jsscripts = ["delete.js","filter.js","search.js"];
+        context.jsscripts = ["delete.js","filter.js","search.js", "empty.js"];
         var mysql = req.app.get('mysql');
         getFilter(req,res, mysql, context, complete);
+	context.return = "Return to unfiltered table";
         function complete(){
             callbackCount++;
             if(callbackCount >= 1){
@@ -149,41 +128,18 @@ module.exports = function(){
             }
 
         }
-    });
-
-
-
-
-
-
-
-
-
-
-
-    router.get('/', function(req, res){
-        var callbackCount = 0;
-        var context = {};
-	context.jsscripts = ["delete.js", "search.js", "filter.js"];
-        var mysql = req.app.get('mysql');
-        getPilots(res, mysql, context, complete);
-        getAirlines(res, mysql, context, complete);
-        getFlights(res, mysql, context, complete);
-        function complete(){
-            callbackCount++;
-            if(callbackCount >= 3){
-                res.render('pilot', context);
-            }
-
-        }
-    });
-    
+});
 
     router.post('/', function(req, res){
-        console.log(req.body)
+	var flight_airline;
+	var flight_number;
+	if (req.body.flight != "NULL"){
+	    flight_airline = req.body.flight.substring(0,2);
+	    flight_number = req.body.flight.substring(2);
+	}
         var mysql = req.app.get('mysql');
         var sql = "INSERT INTO pilots (first_name, last_name, employer, airline, flight_number) VALUES (?,?,?,?,?)";
-        var inserts = [req.body.fname, req.body.lname, req.body.employer, req.body.flight.substring(0,2), req.body.flight.substring(2)];
+        var inserts = [req.body.fname, req.body.lname, req.body.employer, flight_airline, flight_number];
         sql = mysql.pool.query(sql,inserts,function(error, results, fields){
             if(error){
                 console.log(JSON.stringify(error))
@@ -194,6 +150,45 @@ module.exports = function(){
             }
         });
     });
+
+        router.get('/:id', function(req, res){
+            var callbackCount = 0;
+            var context = {};
+            context.jsscripts = ["update.js", "select.js", "empty.js"];
+                var mysql = req.app.get('mysql');
+                getPilot(res, mysql, context, req.params.id, complete);
+                getFlights(res, mysql, context, complete);
+                getAirlines(res, mysql, context, complete);
+                function complete(){
+                    callbackCount++;
+                    if(callbackCount >= 3){
+                        res.render('update-pilots', context);
+                    }
+        
+                }
+	});
+
+            router.put('/:id', function(req, res){
+		var flight_airline;
+		var flight_number;
+		if (req.body.flight != "NULL"){
+		    flight_airline = req.body.flight.substring(0,2);
+		    flight_number = req.body.flight.substring(2);
+		}
+                var mysql = req.app.get('mysql');
+                var sql = "UPDATE pilots SET first_name=?, last_name=?, employer=?, airline=?, flight_number=?  WHERE id=?"; 
+                var inserts = [req.body.first_name, req.body.last_name, req.body.employer, flight_airline, flight_number, req.params.id];
+                sql = mysql.pool.query(sql,inserts,function(error, results, fields){
+                    if(error){
+                        res.write(JSON.stringify(error));
+                        res.end();
+                    }else{
+                        res.status(200);
+                        res.end();
+                    }
+                });
+	});
+
 
     router.delete('/:id', function(req, res){
         var mysql = req.app.get('mysql');
