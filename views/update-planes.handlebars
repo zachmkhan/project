@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="/static/update.css">
+<link rel="stylesheet" href="/static/table.css">
+
+<div class="topnav">
+  <a href="/destination">Return to destination page</a>
+</div>
+
+
+<div class="box"><h1>Update Plane's Airline and Model:</h1>
+<form id="update-plane" action="/plane" method="post" onsubmit="return checkEmpty('model')">
+    Airline: <br>
+    <select name="airline" id = "plane-selector"> 
+        {{#each airlines}}
+        <option value="{{IATA_code}}">{{name}}</option>
+        {{/each}}</select><br>
+    Model: <br>
+    <input type="text" name="model" id = "model" value="{{plane.model}}"><br>
+</form>
+<button onclick="updateRow('plane', {{plane.id}})">Update</button>
+<script defer>selector("{{plane.airline}}", "plane");</script></div>
+
+<div><img src="https://images.pexels.com/photos/4610/stairs-people-airport-escalators.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"></div>
+
+<table>
+    <thead> 
+        <th></th>  
+    </thead> 
+    <tbody>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+    </tbody> 
+</table> 

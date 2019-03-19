@@ -25,25 +25,25 @@
         <option value="{{IATA_code}}">{{name}}</option>
         {{/each}}
       </select><br>
-      <input type="text" name="model" value="Model: "><br>
+      <input type="text" name="model" value="Model: ">
       <input type="submit" value="Submit">
 </form>
 <br>
 <br>
 
-<form id='search_destinations' action='' method=''>
+<form id='search_planes' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    Search planes for airline:<br>
-    <input id='searchName' type='text' name='searchName' value='Airline search:'>
+    Search planes for airline starting with:<br>
+    <input id='searchName' type='text' name='searchName' value=''>
     <input type="button" value="Search" onclick="searchSQL('plane')">
 </form>
 <br>
 <br>
 
-<form id='filter_people' action='' method=''>
+<form id='filter_planes' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    Filter by airline: <br>
-    <select id='homeworld_filter' name="homeworld_filter"> 
+    <Filter by airline<br>
+    <select id='filter' name="filter"> 
         {{#each airlines}}
         <option value={{name}}>{{name}}</option>
         {{/each}}
