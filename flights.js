@@ -177,7 +177,7 @@ module.exports = function(){
                     callbackCount++;
                     if(callbackCount >= 4){
 		  	console.log(context.flight.arrival_time);
-                        res.render('update-flights', context);
+                        res.render('update-flight', context);
                     }
         
                 }
