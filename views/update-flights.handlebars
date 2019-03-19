@@ -1,0 +1,74 @@
+<html>
+<link rel="stylesheet" href="/static/update.css">
+<link rel="stylesheet" href="/static/table.css">
+
+<div class="topnav">
+  <a href="/destination">Return to destination page</a>
+</div>
+
+
+<div class="box"><h1>Update {{flight.airline_designator}}{{flight.flight_number}} {{flight.departure_time}} {{flight.arrival_time}} {{flight.destination}} {{flight.plane}}:</h1>
+<form id="update-flight" action="/flight" method="post" onsubmit="return checkEmpty('flight', 'departure', 'arrival')">
+   Airline: <br>
+   <select name="airline" id = "airline-selector"> 
+        {{#each airlines}}
+        <option value="{{IATA_code}}">{{name}}</option>
+        {{/each}}
+    </select><br>
+    Flight Number: <br>
+    <input type="text" name="flight" id="flight" value="{{flight.flight_number}}"><br>
+    Departure Time: <br>
+    <input type="datetime-local" name="departure" id ="departure" value="{{flight.departure_time}}"><br>
+    Arrival Time: <br>
+    <input type="datetime-local" name="arrival" id="arrival" value="{{flight.arrival_time}}"><br>
+    Destination: <br>
+    <select name="destination" id = "destination-selector"> 
+        {{#each destinations}}
+        <option value="{{id}}">{{city}}</option>
+        {{/each}}
+      </select><br>
+    Plane: <br>
+    <select name="plane" id = "plane-selector"> 
+        {{#each planes}}
+        <option value="{{id}}">{{id}}</option>
+        {{/each}}
+	<option value="NULL">No Plane Assigned Yet</option>
+      </select><br>
+</form>
+<button onclick="updateRow('flight', '{{flight.airline_designator}}{{flight.flight_number}}')">Update</button>
+<script defer>selector("{{flight.airline_designator}}", 'airline');</script>
+<script defer>selector("{{flight.destination}}", 'destination');</script>
+<script defer>selector("{{flight.plane}}", 'plane');</script></div>
+
+<div><img src="https://images.pexels.com/photos/4610/stairs-people-airport-escalators.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"></div>
+
+<table>
+    <thead> 
+        <th></th>  
+    </thead> 
+    <tbody>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+    </tbody> 
+</table> 
+
+</html>
