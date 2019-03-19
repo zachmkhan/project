@@ -66,7 +66,7 @@ module.exports = function(){
     });
 
             function getPilotList(req, res, mysql, context, complete){
-                var query = "SELECT PI.first_name, PI.last_name, PP.departure, CONCAT(PP.airline, PP.flight_number) AS flight, PA.first_name AS pa_fname, PA.last_name AS pa_lname FROM passengers PA INNER JOIN passenger_pilot PP ON PA.id = PP.passenger INNER JOIN pilots PI ON PI.id = PP.pilot WHERE PA.id = ?";
+                var query = "SELECT DISTINCT PI.first_name, PI.last_name, PP.departure, CONCAT(PP.airline, PP.flight_number) AS flight, PA.first_name AS pa_fname, PA.last_name AS pa_lname FROM passengers PA INNER JOIN passenger_pilot PP ON PA.id = PP.passenger INNER JOIN pilots PI ON PI.id = PP.pilot WHERE PA.id = ?";
                 var inserts = [req.params.id]
                 mysql.pool.query(query, inserts, function(error, results, fields){
                       if(error){
@@ -79,7 +79,7 @@ module.exports = function(){
               }
 
             function getPassengerList(req, res, mysql, context, complete){
-                var query = "SELECT PA.first_name, PA.last_name, PP.departure, CONCAT(PP.airline, PP.flight_number) AS flight, PI.first_name AS pi_fname, PI.last_name AS pi_lname FROM passengers PA INNER JOIN passenger_pilot PP ON PA.id = PP.passenger INNER JOIN pilots PI ON PI.id = PP.pilot WHERE PI.id = ?";
+                var query = "SELECT DISTINCT PA.first_name, PA.last_name, PP.departure, CONCAT(PP.airline, PP.flight_number) AS flight, PI.first_name AS pi_fname, PI.last_name AS pi_lname FROM passengers PA INNER JOIN passenger_pilot PP ON PA.id = PP.passenger INNER JOIN pilots PI ON PI.id = PP.pilot WHERE PI.id = ?";
                 var inserts = [req.params.id]
                 mysql.pool.query(query, inserts, function(error, results, fields){
                       if(error){
