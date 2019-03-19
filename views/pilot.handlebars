@@ -17,19 +17,20 @@
 <div class="submissions"><h3>Pilots:</h3>
 
 <form id = "addpilot" action="" method="post">
-    Add new Pilot:<br>
       <input type="text" name="fname" value="First Name: "><br>
       <input type="text" name="lname" value="Last Name: "><br>
-      
+      Employer: <br>
       <select name="employer"> 
         {{#each airlines}}
         <option value="{{name}}">{{name}}</option>
         {{/each}}
       </select><br>
+      Flight: <br>
       <select name="flight"> 
         {{#each flights}}
         <option value="{{airline_designator}}{{flight_number}}">{{airline_designator}}{{flight_number}}</option>
         {{/each}}
+	<option value="NULL">No Flight</option>
       </select>
       <input type="submit" value="Submit">
 </form>
@@ -37,20 +38,20 @@
 <br>
 
 
-<form id='search_destinations' action='' method=''>
+<form id='search_pilots' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Search pilots by first name:<br>
-    <input id='searchName' type='text' name='searchName' value='Search name'>
+    Search pilots for first name starting with:<br>
+    <input id='searchName' type='text' name='searchName' value=''>
     <input type="button" value="Search" onclick="searchSQL('pilot')">
 </form>
 <br>
 <br>
 
 
-<form id='filter_people' action='' method=''>
+<form id='filter_pilots' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    Filter by employer<br>
-    <select id='homeworld_filter' name="homeworld_filter"> 
+    Filter by employer <br>
+    <select id='filter' name="filter"> 
         {{#each airlines}}
         <option value={{name}}>{{name}}</option>
         {{/each}}
@@ -79,10 +80,10 @@
             <td>{{employer}}</td> 
             <td>{{flight}}</td> 
             <td><button onclick="deleteRow('pilot',{{id}})">Delete</button></td>
-            <td><a class="update" href="/pilot/{{id}}">Update</a></td>
+            <td><a class="update"  href="/pilot/{{id}}">Update</a></td>
         </tr> 
         {{/each}} 
     </tbody> 
-</table> 
-<a href = "/pilot">{{return}}</a>
+</table>
+<a href = "/pilot">{{return}}</a> 
 </html>
