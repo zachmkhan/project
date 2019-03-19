@@ -162,7 +162,7 @@ module.exports = function(){
                 function complete(){
                     callbackCount++;
                     if(callbackCount >= 3){
-                        res.render('update-pilots', context);
+                        res.render('update-pilot', context);
                     }
         
                 }
