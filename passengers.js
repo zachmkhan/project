@@ -42,7 +42,7 @@ module.exports = function(){
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
-	context.jsscripts = ["delete.js", "search.js"];
+	context.jsscripts = ["delete.js", "search.js", "list.js"];
         var mysql = req.app.get('mysql');
         getPassengers(res, mysql, context, complete);
         getFlights(res, mysql, context, complete);
@@ -82,6 +82,35 @@ function searchPassengers(req, res, mysql, context, complete) {
                     res.render('passenger', context);
                 }
             }
+});
+
+            function getPilotList(req, res, mysql, context, complete){
+                var query = "SELECT PI.first_name, PI.last_name, PP.departure, CONCAT(PP.airline, PP.flight_number) AS flight, PA.first_name AS pa_fname, PA.last_name AS pa_lname FROM passengers PA INNER JOIN passenger_pilot PP ON PA.id = PP.passenger INNER JOIN pilots PI ON PI.id = PP.pilot WHERE PA.id = ?";
+                var inserts = [req.params.id]
+                mysql.pool.query(query, inserts, function(error, results, fields){
+                      if(error){
+                          res.write(JSON.stringify(error));
+                          res.end();
+                      }
+                      context.pilots = results;
+                      complete();
+                  });
+              }
+
+    router.get('/list/:id', function(req, res){
+        var callbackCount = 0;
+        var context = {};
+        context.jsscripts = ["list.js"];
+        var mysql = req.app.get('mysql');
+        getPilotList(req, res, mysql, context, complete);
+	context.return = "Return to passenger table";
+        function complete(){
+            callbackCount++;
+            if(callbackCount >= 1){
+                res.render('pilot-list', context);
+            }
+
+        }
 });
 
     router.post('/', function(req, res){

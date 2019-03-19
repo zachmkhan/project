@@ -52,7 +52,7 @@ module.exports = function(){
     router.get('/', function(req, res){
         var callbackCount = 0;
         var context = {};
-	context.jsscripts = ["delete.js", "filter.js","search.js"];
+	context.jsscripts = ["delete.js", "filter.js","search.js", "list.js"];
         var mysql = req.app.get('mysql');
         getPilots(res, mysql, context, complete);
         getAirlines(res, mysql, context, complete);
@@ -99,7 +99,6 @@ module.exports = function(){
             
             function getFilter(req, res, mysql, context, complete){
                 var query = "SELECT id, first_name, last_name, employer, CONCAT(airline, flight_number) AS flight FROM pilots WHERE employer LIKE" + mysql.pool.escape(req.params.name + '%');
-                console.log(req.params)
                 var inserts = [req.params.name]
                 mysql.pool.query(query, inserts, function(error, results, fields){
                       if(error){
@@ -124,6 +123,35 @@ module.exports = function(){
             callbackCount++;
             if(callbackCount >= 1){
                 res.render('pilot', context);
+            }
+
+        }
+});
+
+            function getPassengerList(req, res, mysql, context, complete){
+                var query = "SELECT PA.first_name, PA.last_name, PP.departure, CONCAT(PP.airline, PP.flight_number) AS flight, PI.first_name AS pi_fname, PI.last_name AS pi_lname FROM passengers PA INNER JOIN passenger_pilot PP ON PA.id = PP.passenger INNER JOIN pilots PI ON PI.id = PP.pilot WHERE PI.id = ?";
+                var inserts = [req.params.id]
+                mysql.pool.query(query, inserts, function(error, results, fields){
+                      if(error){
+                          res.write(JSON.stringify(error));
+                          res.end();
+                      }
+                      context.passengers = results;
+                      complete();
+                  });
+              }
+
+    router.get('/list/:id', function(req, res){
+        var callbackCount = 0;
+        var context = {};
+        context.jsscripts = ["list.js"];
+        var mysql = req.app.get('mysql');
+        getPassengerList(req, res, mysql, context, complete);
+	context.return = "Return to pilot table";
+        function complete(){
+            callbackCount++;
+            if(callbackCount >= 1){
+                res.render('passenger-list', context);
             }
 
         }
