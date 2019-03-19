@@ -16,25 +16,25 @@
 
     <div class="submissions"><h3>Passengers:</h3>
 
-<form id = "addpassenger" action="" method="post">
-      Add new passenger: <br>
-      <input type="text" name="fname" value="First Name"><br>
-      <input type="text" name="lname" value="Last Name: "><br>
-      <input type="text" name="visits" value="Number of Visits: "><br>
+<form id = "addpassenger" action="" method="post" onsubmit="return checkEmpty('fname', 'lname')">
+      <input type="text" name="fname" id="fname" value="First Name: "><br>
+      <input type="text" name="lname" id="lname" value="Last Name: "><br>
+      Flight: <br>
       <select name="flight"> 
         {{#each flights}}
         <option value="{{airline_designator}}{{flight_number}}">{{airline_designator}}{{flight_number}}</option>
         {{/each}}
+	<option value="NULL">No Flight</option>
       </select>
       <input type="submit" value="Submit">
 </form>
 <br>
 <br>
 
-<form id='search_destinations' action='' method=''>
+<form id='search_passengers' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    Search passengers by first name:<br>
-    <input id='searchName' type='text' name='searchName' value='Passenger search'>
+    Search passengers for first name starting with:<br>
+    <input id='searchName' type='text' name='searchName' value=''>
     <input type="button" value="Search" onclick="searchSQL('passenger')">
 </form></div>
 <div><img src="https://images.pexels.com/photos/4610/stairs-people-airport-escalators.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"></div>
