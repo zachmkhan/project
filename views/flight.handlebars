@@ -1,14 +1,14 @@
 <html>
 
-<form id = "addflight" action="" method="post">
+<form id = "addflight" action="" method="post" onsubmit="return checkEmpty('flight', 'departure', 'arrival')">
       Airline: <select name="airline"> 
         {{#each airlines}}
         <option value="{{IATA_code}}">{{name}}</option>
         {{/each}}
       </select><br>
-      Flight Number: <input type="text" name="flight" value=""><br>
-      Departure Time: <input type="datetime-local" name="departure" value=""><br>
-      Arrival Time: <input type="datetime-local" name="arrival" value=""><br>
+      Flight Number: <input type="text" name="flight" id ="flight" value=""><br>
+      Departure Time: <input type="datetime-local" name="departure" id="departure" value=""><br>
+      Arrival Time: <input type="datetime-local" name="arrival" id="arrival" value=""><br>
       Destination: <select name="destination"> 
         {{#each destinations}}
         <option value="{{id}}">{{city}}</option>
@@ -18,6 +18,7 @@
         {{#each planes}}
         <option value="{{id}}">{{id}}</option>
         {{/each}}
+	<option value="NULL">No Plane Assigned Yet</option>
       </select><br>
       <input type="submit" value="Submit">
 </form>

@@ -1,14 +1,14 @@
 <html>
 <h1>Update {{flight.airline_designator}}{{flight.flight_number}} {{flight.departure_time}} {{flight.arrival_time}} {{flight.destination}} {{flight.plane}}:</h1>
-<form id="update-flight" action="/flight" method="post">
+<form id="update-flight" action="/flight" method="post" onsubmit="return checkEmpty('flight', 'departure', 'arrival')>
    Airline: <select name="airline" id = "airline-selector"> 
         {{#each airlines}}
         <option value="{{IATA_code}}">{{name}}</option>
         {{/each}}
     </select><br>
-    Flight Number: <input type="text" name="flight" value="{{flight.flight_number}}"><br>
-    Departure Time: <input type="datetime-local" name="departure" value="{{flight.departure_time}}"><br>
-    Arrival Time: <input type="datetime-local" name="arrival" value="{{flight.arrival_time}}"><br>
+    Flight Number: <input type="text" name="flight" id="flight" value="{{flight.flight_number}}"><br>
+    Departure Time: <input type="datetime-local" name="departure" id ="departure" value="{{flight.departure_time}}"><br>
+    Arrival Time: <input type="datetime-local" name="arrival" id="arrival" value="{{flight.arrival_time}}"><br>
     Destination: <select name="destination" id = "destination-selector"> 
         {{#each destinations}}
         <option value="{{id}}">{{city}}</option>
@@ -18,6 +18,7 @@
         {{#each planes}}
         <option value="{{id}}">{{id}}</option>
         {{/each}}
+	<option value="NULL">No Plane Assigned Yet</option>
       </select><br>
 </form>
 <button onclick="updateRow('flight', '{{flight.airline_designator}}{{flight.flight_number}}')">Update</button>

@@ -1,60 +1,35 @@
 <html>
 
-    <!--https://www.pexels.com/photo/stairs-people-airport-escalators-4610/ Royality free photo-->
-<link rel="stylesheet" href="/static/database.css">
-<link rel="stylesheet" href="/static/table.css">
-<link rel="stylesheet" href="/static/top.css">
-
-
-
-<div class="topnav">
-  <a href="/pilot">Pilot</a>
-  <a href="/airline">Airline</a>
-  <a href="/flight">Flight</a>
-  <a href="/passenger">Passenger</a>
-  <a href="/destination">Destination</a>
-  <a href="/plane">Plane</a>
-</div>
-
-<div class="submissions"><h3>Planes:</h3>
-
-<form id = "addplane" action="" method="post">
-    Add a new plane:<br>
-      <select name="airline"> 
+<form id = "addplane" action="" method="post" onsubmit="return checkEmpty('model')">
+      Airline: <select name="airline"> 
         {{#each airlines}}
         <option value="{{IATA_code}}">{{name}}</option>
         {{/each}}
       </select><br>
-      <input type="text" name="model" value="Model: "><br>
+      Model: <input type="text" name="model" id="model" value=""><br>
       <input type="submit" value="Submit">
 </form>
-<br>
-<br>
 
-<form id='search_destinations' action='' method=''>
+<form id='search_planes' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    Search planes for airline:<br>
-    <input id='searchName' type='text' name='searchName' value='Airline search:'>
+    <label> Search planes for airline starting with:</label>
+    <input id='searchName' type='text' name='searchName' value=''>
     <input type="button" value="Search" onclick="searchSQL('plane')">
 </form>
-<br>
-<br>
 
-<form id='filter_people' action='' method=''>
+<form id='filter_planes' action='' method=''>
 <!--- this form does not submit directly, the button handles all the interaction with backend -->
-    Filter by airline: <br>
-    <select id='homeworld_filter' name="homeworld_filter"> 
+    <label> Filter by airline </label>
+    <select id='filter' name="filter"> 
         {{#each airlines}}
         <option value={{name}}>{{name}}</option>
         {{/each}}
-    </select>
+    </select><br>
     <input type="button" value="Filter" onclick="filterSQL('plane')">
-</form></div>
-<div><img src="https://images.pexels.com/photos/4610/stairs-people-airport-escalators.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"></div>
+</form>
 
 
-
-
+<h3>Planes:</h3>
 <table>
     <thead> 
         <th>Plane Number</th> 
@@ -69,10 +44,10 @@
             <td>{{airline}}</td> 
             <td>{{model}}</td> 
             <td><button onclick="deleteRow('plane',{{id}})">Delete</button></td>
-            <td><a class="update" href="/plane/{{id}}">Update</a></td>
+            <td><a href="/plane/{{id}}">Update</a></td>
         </tr> 
         {{/each}} 
     </tbody> 
-</table>
+</table> 
 <a href = "/plane">{{return}}</a>
 </html>

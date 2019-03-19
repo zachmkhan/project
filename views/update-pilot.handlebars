@@ -1,7 +1,7 @@
 <h1>Update {{pilot.first_name}} {{pilot.last_name}} {{pilot.employer}} {{pilot.flight}}:</h1>
-<form id="update-pilot" action="/pilot" method="post">
-    First Name: <input type="text" name="first_name" value="{{pilot.first_name}}"><br>
-    Last Name: <input type="text" name="last_name" value="{{pilot.last_name}}"><br>
+<form id="update-pilot" action="/pilot" method="post" onsubmit="return checkEmpty('first_name', 'last_name')">
+    First Name: <input type="text" name="first_name" id = "first_name" value="{{pilot.first_name}}"><br>
+    Last Name: <input type="text" name="last_name" id = "last_name" value="{{pilot.last_name}}"><br>
     Employer: <select name="employer" id = "employer-selector"> 
         {{#each airlines}}
         <option value="{{name}}">{{name}}</option>
@@ -11,6 +11,7 @@
         {{#each flights}}
         <option value="{{airline_designator}}{{flight_number}}">{{airline_designator}}{{flight_number}}</option>
         {{/each}}
+	<option value="NULL">No Flight</option>
       </select><br>
 </form>
 <button onclick="updateRow('pilot', {{pilot.id}})">Update</button>
