@@ -1,12 +1,13 @@
 <html>
 
-<form id = "addpassenger" action="" method="post">
-      First Name: <input type="text" name="fname" value=""><br>
-      Last Name: <input type="text" name="lname" value=""><br>
+<form id = "addpassenger" action="" method="post" onsubmit="return checkEmpty('fname', 'lname')">
+      First Name: <input type="text" name="fname" id="fname" value=""><br>
+      Last Name: <input type="text" name="lname" id="lname" value=""><br>
       Flight: <select name="flight"> 
         {{#each flights}}
         <option value="{{airline_designator}}{{flight_number}}">{{airline_designator}}{{flight_number}}</option>
         {{/each}}
+	<option value="NULL">No Flight</option>
       </select><br>
       <input type="submit" value="Submit">
 </form>
@@ -18,16 +19,6 @@
     <input type="button" value="Search" onclick="searchSQL('passenger')">
 </form>
 
-<form id='get_Pilots' action='' method=''>
-<!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Get list of pilots for a specific passenger </label>
-    <select id='getList' name="getList"> 
-        {{#each passengers}}
-        <option value={{id}}>{{first_name}} {{last_name}}</option>
-        {{/each}}
-    </select><br>
-    <input type="button" value="Filter" onclick="getPList('passenger')">
-</form>
 
 
 <h3>Passengers:</h3>

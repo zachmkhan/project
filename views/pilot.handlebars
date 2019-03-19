@@ -12,6 +12,7 @@
         {{#each flights}}
         <option value="{{airline_designator}}{{flight_number}}">{{airline_designator}}{{flight_number}}</option>
         {{/each}}
+	<option value="NULL">No Flight</option>
       </select><br>
       <input type="submit" value="Submit">
 </form>
@@ -33,18 +34,6 @@
         {{/each}}
     </select><br>
     <input type="button" value="Filter" onclick="filterSQL('pilot')">
-</form>
-
-
-<form id='get_Passengers' action='' method=''>
-<!--- this form does not submit directly, the button handles all the interaction with backend -->
-    <label> Get list of passengers for a specific pilot </label>
-    <select id='getList' name="getList"> 
-        {{#each pilots}}
-        <option value={{id}}>{{first_name}} {{last_name}}</option>
-        {{/each}}
-    </select><br>
-    <input type="button" value="Filter" onclick="getPList('pilot')">
 </form>
 
 

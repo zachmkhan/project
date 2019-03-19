@@ -1,0 +1,44 @@
+<form id='get_Pilots' action='' method=''>
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Get list of pilots for a specific passenger </label>
+    <select id='getList' name="getList"> 
+        {{#each passengers}}
+        <option value={{id}}>{{first_name}} {{last_name}}</option>
+        {{/each}}
+    </select><br>
+    <input type="button" value="Filter" onclick="getPList('pilot')">
+</form>
+
+
+<form id='get_Passengers' action='' method=''>
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Get list of passengers for a specific pilot </label>
+    <select id='getList' name="getList"> 
+        {{#each pilots}}
+        <option value={{id}}>{{first_name}} {{last_name}}</option>
+        {{/each}}
+    </select><br>
+    <input type="button" value="Filter" onclick="getPList('passenger')">
+</form>
+
+<form id='insert_pilot_passenger' action='' method='post'>
+    <label> Update list of all pairings of passengers and pilots for a current flight:</label>
+        <select id='current_flight' name="current_flight"> 
+        {{#each flights}}
+        <option value={{flight}}>Flight:{{flight}}, Departure Day:{{departure_time}}</option>
+        {{/each}}
+    </select><br>
+    <input type="submit" value="Update"">
+</form>
+
+
+<form id='delete_pilot_passenger' action='' method=''>
+    <label> Delete list of all pairings of passengers and pilots for a given flight:</label>
+        <select id='flight' name="flight"> 
+        {{#each all_flights}}
+        <option value='{{flights}}'>Flight:{{flights}}, Departure Day:{{departure}}</option>
+        {{/each}}
+    </select><br>
+    <input type="button" value="Delete" onclick="deleteFlight('passenger-pilot')">
+</form>
+
