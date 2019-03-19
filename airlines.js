@@ -107,7 +107,7 @@ module.exports = function(){
             function complete(){
                 callbackCount++;
                 if(callbackCount >= 1){
-                    res.render('update-airlines', context);
+                    res.render('update-airline', context);
                 }
     
             }
