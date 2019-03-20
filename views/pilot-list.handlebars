@@ -1,0 +1,63 @@
+<html>
+<link rel="stylesheet" href="/static/update.css">
+<link rel="stylesheet" href="/static/table.css">
+
+<div class="topnav">
+  <a href="/passenger-pilot">Return to passenger-pilot page</a>
+</div>
+
+
+<div class="box">
+<h3>List of pilots who have flown with passenger {{passengers.0.pa_fname}} {{passengers.0.pa_lname}}</h3>
+<table>
+    <thead> 
+        <th>First Name</th> 
+        <th>Last Name</th> 
+        <th>Departure Date</th> 
+        <th>Flight</th>  
+        <th>Delete</th>  
+    </thead> 
+    <tbody>
+        {{#each pilots}} 
+        <tr> 
+            <td>{{first_name}}</td> 
+            <td>{{last_name}}</td> 
+            <td>{{departure}}</td> 
+            <td>{{flight}}</td> 
+        </tr> 
+        {{/each}} 
+    </tbody> 
+</table>
+<a href = "/passenger-pilot">{{return}}</a> </div>
+<div><img src="https://images.pexels.com/photos/4610/stairs-people-airport-escalators.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"></div>
+
+<table>
+    <thead> 
+        <th></th>  
+    </thead> 
+    <tbody>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+    </tbody> 
+</table> 
+</html>
+</html>
