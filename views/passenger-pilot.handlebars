@@ -1,0 +1,93 @@
+<html>
+    <!--https://www.pexels.com/photo/stairs-people-airport-escalators-4610/ Royality free photo-->
+<link rel="stylesheet" href="/static/database.css">
+<link rel="stylesheet" href="/static/table.css">
+<link rel="stylesheet" href="/static/top.css">
+<link rel="stylesheet" href="/static/update.css">
+
+
+
+<div class="topnav">
+  <a href="/pilot">Pilot</a>
+  <a href="/airline">Airline</a>
+  <a href="/flight">Flight</a>
+  <a href="/passenger">Passenger</a>
+  <a href="/destination">Destination</a>
+  <a href="/plane">Plane</a>
+  <a href="/passenger-pilot">Plane</a>
+</div>
+<div class="submissions">
+
+
+<form id='get_Pilots' action='' method=''>
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Get list of pilots for a specific passenger </label>
+    <select id='getPilotList' name="getPilotList"> 
+        {{#each passengers}}
+        <option value={{id}}>{{first_name}} {{last_name}}</option>
+        {{/each}}
+    </select><br>
+    <input type="button" value="Filter" onclick="getPiList()">
+</form>
+
+
+<form id='get_Passengers' action='' method=''>
+<!--- this form does not submit directly, the button handles all the interaction with backend -->
+    <label> Get list of passengers for a specific pilot </label>
+    <select id='getPassengerList' name="getPassengerList"> 
+        {{#each pilots}}
+        <option value={{id}}>{{first_name}} {{last_name}}</option>
+        {{/each}}
+    </select><br>
+    <input type="button" value="Filter" onclick="getPaList()">
+</form>
+
+<form id='insert_pilot_passenger' action='' method='post'>
+    <label> Update list of all pairings of passengers and pilots for a current flight:</label>
+        <select id='current_flight' name="current_flight"> 
+        {{#each flights}}
+        <option value={{flight}}>Flight:{{flight}}, Departure Day:{{departure_time}}</option>
+        {{/each}}
+    </select><br>
+    <input type="submit" value="Update">
+</form>
+<form id='delete_pilot_passenger' action='' method=''>
+    <label> Delete list of all pairings of passengers and pilots for a given flight:</label>
+        <select id='flight' name="flight"> 
+        {{#each all_flights}}
+        <option value='{{flights}}'>Flight:{{flights}}, Departure Day:{{departure}}</option>
+        {{/each}}
+    </select><br>
+    <input type="button" value="Delete" onclick="deleteFlight('passenger-pilot')">
+</form></div>
+
+<div><img src="https://images.pexels.com/photos/4610/stairs-people-airport-escalators.jpg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"></div>
+
+<table>
+    <thead> 
+        <th></th>  
+    </thead> 
+    <tbody>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+        <tr><td></td></tr>
+    </tbody> 
+</table> 
