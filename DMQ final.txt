@@ -1,0 +1,102 @@
+-- Question marks (?) are used in place of data provided by the back end code
+
+
+--The following queries are grouped and ordered from airlines to planes alphabetically
+
+--Queries that display all the values in each of the main tables.
+
+SELECT IATA_code, name, departure_terminal FROM airlines;
+SELECT id, city, country FROM destinations;
+SELECT CONCAT(airline_designator, flight_number) AS flight_number, departure_time, arrival_time, destinations.city AS destination, plane FROM flights INNER JOIN destinations ON destinations.id = flights.destination;
+SELECT id, first_name, last_name, number_of_visits, CONCAT(airline, flight_number) AS flight FROM passengers;
+SELECT id, first_name, last_name, employer, CONCAT(airline, flight_number) AS flight FROM pilots;
+SELECT id, airlines.name AS airline, model FROM planes INNER JOIN airlines WHERE airlines.IATA_code = planes.airline;
+
+--Searches filtered by the primary key, used by update functionality to input current values of an entity before updating
+
+SELECT IATA_code, name, departure_terminal FROM airlines WHERE IATA_code = ?;
+SELECT id, city, country FROM destinations WHERE id = ?;
+SELECT airline_designator, flight_number, departure_time, arrival_time, destination, plane FROM flights WHERE CONCAT(airline_designator, flight_number) = ?;
+SELECT id, first_name, last_name, number_of_visits, CONCAT(airline, flight_number) AS flight FROM passengers WHERE id=?;
+SELECT id, first_name, last_name, employer, CONCAT(airline, flight_number) AS flight FROM pilots WHERE id=?;
+SELECT id, airline, model FROM planes WHERE id = ?;
+
+--Various searches for all values in a table filtered by user entered text
+
+SELECT IATA_code, name, departure_terminal FROM airlines WHERE name LIKE ?;
+SELECT id, city, country FROM destinations WHERE city LIKE ?;
+SELECT CONCAT(airline_designator, flight_number) AS flight_number, departure_time, arrival_time, destinations.city AS destination, plane FROM flights INNER JOIN destinations ON destinations.id = flights.destination WHERE CONCAT(airline_designator, flight_number) LIKE ?;
+SELECT id, first_name, last_name, number_of_visits, CONCAT(airline, flight_number) AS flight FROM passengers WHERE first_name LIKE ?;
+SELECT id, first_name, last_name, employer, CONCAT(airline, flight_number) AS flight FROM pilots WHERE first_name LIKE ?;
+SELECT id, airlines.name AS airline, model FROM planes INNER JOIN airlines ON airlines.IATA_code = planes.airline WHERE airlines.name LIKE ?;
+
+--Searches for all values in a table filtered by a value in a particular column
+
+--Flights filtered by airline
+SELECT CONCAT(airline_designator, flight_number) AS flight_number, departure_time, arrival_time, destinations.city AS destination, plane FROM flights INNER JOIN destinations ON destinations.id = flights.destination WHERE airline_designator =?;
+
+--Pilots filtered by airline
+SELECT id, first_name, last_name, employer, CONCAT(airline, flight_number) AS flight FROM pilots WHERE employer LIKE ?;
+
+--Planes filtered by airline
+SELECT id, airlines.name AS airline, model FROM planes INNER JOIN airlines ON airlines.IATA_code = planes.airline WHERE airlines.name LIKE ?;
+
+-- Insert queries for each individual table
+
+INSERT INTO airlines (IATA_code, name, departure_terminal) VALUES (?,?,?);
+INSERT INTO destinations (city, country) VALUES (?,?);
+INSERT INTO flights (airline_designator, flight_number, departure_time, arrival_time, destination, plane) VALUES (?,?,?,?,?,?);
+INSERT INTO passengers (first_name, last_name, number_of_visits, airline, flight_number) VALUES (?,?,?,?,?);
+INSERT INTO pilots (first_name, last_name, employer, airline, flight_number) VALUES (?,?,?,?,?);
+INSERT INTO planes (airline, model) VALUES (?,?);
+
+-- Update queries for each individual table
+
+UPDATE airlines SET name=?, departure_terminal=? WHERE IATA_code=?;
+UPDATE destinations SET city=?, country=? WHERE id=?;
+UPDATE flights SET airline_designator=?, flight_number=?, departure_time=?, arrival_time=?, destination=?, plane = ? WHERE airline_designator = ? AND flight_number = ?;
+UPDATE passengers SET first_name=?, last_name=?, number_of_visits=?, airline=?, flight_number=?  WHERE id=?;
+UPDATE pilots SET first_name=?, last_name=?, employer=?, airline=?, flight_number=?  WHERE id=?;
+UPDATE planes SET airline=?, model=? WHERE id=?;
+
+--Delete queries for each individual table
+
+DELETE FROM airlines WHERE IATA_code = ?;
+DELETE FROM destinations WHERE id = ?;
+DELETE FROM flights WHERE CONCAT(airline_designator, flight_number) = ?;
+DELETE FROM passengers WHERE id = ?;
+DELETE FROM pilots WHERE id = ?;
+DELETE FROM planes WHERE id = ?;
+
+
+--Search queries used to get id and names of all entities in a table to be used in dropdown lists of inserts/updates
+
+SELECT IATA_code, name FROM airlines;
+SELECT id, city FROM destinations;
+SELECT airline_designator, flight_number FROM flights;
+SELECT CONCAT(airline_designator, flight_number) AS flight, departure_time FROM flights; --This is used for updating passenger-pilot table
+SELECT id FROM planes;;
+
+
+--Queries for the relationship table between passenger and pilots
+
+--Query to get all pilots in passenger-pilot database
+SELECT id, first_name, last_name, employer, CONCAT(airline, flight_number) AS flight FROM pilots;
+
+--Query to get all passengers in passenger-pilot database
+SELECT id, first_name, last_name, number_of_visits, CONCAT(airline, flight_number) AS flight FROM passengers;
+
+--Query to get a list of all flights in the passenger pilot table, used to delete all relationships from a specific flight (for example after a certain time has passed)
+SELECT DISTINCT CONCAT(airline, flight_number) AS flights, departure FROM passenger_pilot ORDER BY flights;
+
+--Query to get a list of pilots that flew with a specific customer
+SELECT DISTINCT PI.first_name, PI.last_name, PP.departure, CONCAT(PP.airline, PP.flight_number) AS flight, PA.first_name AS pa_fname, PA.last_name AS pa_lname FROM passengers PA INNER JOIN passenger_pilot PP ON PA.id = PP.passenger INNER JOIN pilots PI ON PI.id = PP.pilot WHERE PA.id = ?;
+
+--Query to get a list of passengers that flew with a specific pilot
+SELECT DISTINCT PA.first_name, PA.last_name, PP.departure, CONCAT(PP.airline, PP.flight_number) AS flight, PI.first_name AS pi_fname, PI.last_name AS pi_lname FROM passengers PA INNER JOIN passenger_pilot PP ON PA.id = PP.passenger INNER JOIN pilots PI ON PI.id = PP.pilot WHERE PI.id = ?;
+
+-Query to update passenger-pilot relationships for all passengers and pilots on a flight (presumably after it takes off
+INSERT INTO passenger_pilot (passenger, pilot, airline, flight_number, departure) SELECT PAS.id, PIL.id, PAS.airline, PAS.flight_number, F.departure_time FROM passengers PAS INNER JOIN pilots PIL ON PAS.airline = PIL.airline AND PAS.flight_number = PIL.flight_number INNER JOIN flights F ON PAS.airline = F.airline_designator AND PAS.flight_number = F.flight_number WHERE F.airline_designator = ? AND F.flight_number = ?;
+
+--Query to delete all passenger-pilot relationships for a specific flight in the past
+DELETE FROM passenger_pilot WHERE CONCAT(airline, flight_number) = ?;
